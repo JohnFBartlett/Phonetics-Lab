@@ -255,10 +255,10 @@ def format_files(partLength, adjusted, otherFile, outpath):
             
         # if so, get all files in directory
         aFiles = listdir(adjusted)
-        print aFiles
+        # print aFiles
         # get file in other directory
         otherFiles = listdir(otherFile)
-        print "oth is " + str(otherFiles)
+        # print "oth is " + str(otherFiles)
         # make iterator
         dircycle = cycle(otherFiles)
     
@@ -267,10 +267,10 @@ def format_files(partLength, adjusted, otherFile, outpath):
         counter = 0
         avgline = float(0)
 
-        print "Otherfiles[3] is " + otherFiles[1]
+        print "Otherfiles[3] is " + otherFiles[3]
 
         # check what type of files are in directory
-        if ".creak" in otherFiles[1]:
+        if ".creak" in otherFiles[3]:
             
             # boolean that says whether to skip the rest of the adjusted file
             skip_a = False
@@ -398,9 +398,9 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             # print time range, 
                             if counter != 0:
                                 avgline = float(lines / counter)
-                                print("=====================================")
-                                print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(avgline))
-                                print("=====================================")
+                                # print("=====================================")
+                                # print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(avgline))
+                                # print("=====================================")
                                 out.write(currStart + '\t' + currEnd + '\t' + str(avgline) + '\n')
     
                             # clear variables
