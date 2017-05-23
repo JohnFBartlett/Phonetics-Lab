@@ -1,0 +1,17 @@
+Found in Children’s Corpus Spreadsheets
+
+- filename
+- current segment
+- Tone (?)
+- next segment Tone (?)
+- Vowel boolean
+- start time
+- end time
+- speaker ID
+- preceding segment
+- next segment
+- creak data
+- reaper data
+- voicesauce data
+
+DOES NOT HAVE break or speech style info

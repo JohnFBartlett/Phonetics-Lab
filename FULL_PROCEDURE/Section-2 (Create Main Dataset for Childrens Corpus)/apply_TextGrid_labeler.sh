@@ -8,5 +8,5 @@ pwd
 for file in $(find . -depth -name '*.TextGrid'); do
 	echo converting file $file ...
 	VAR=${file##*/}
-	python ~/Desktop/Phonetics_Lab_Work/TextGrid_Scripts/textGrid_labeler.py $file SVO_Chinese_words_and_sentences.csv
+	python textGrid_labeler.py $file SVO_Chinese_words_and_sentences.csv
 done
