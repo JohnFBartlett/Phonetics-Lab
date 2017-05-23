@@ -1,0 +1,48 @@
+Phonetics Lab Data Documentation 
+NOTES: 
+- all downloaded scripts (scripts not written by John Bartlett) are surrounded by the ^ character (ex. ^CreakyDetection_CompleteDetection.m^ )
+- all extensions are surrounded by the ’ character (ex. ‘txt’ or ‘creak’)
+
+Section 1: Creating Main Datasets for COSPRO corpora
+NOTE: all steps that do not involve all COSPRO corpora will indicate specific corpora in parentheses 
+	Phase 1 (Initial Steps):
+		1. Extract all wav files in each corpus into an all_wav folder for that corpus (done in command line).
+		2. Remove spaces from filenames either with apply_space_elimination.sh or in the command line 
+		   (several packages in this process are unable to read filenames with spaces).
+	Phase 2 (Creak Analysis):
+		1. (COSPRO_04, COSPRO_07) Run resample_to_16000.sh to convert sample rate of ‘wav’ files from 44100 to 16000.
+		   (The creak detection package used in this phase only works on files with a 16000 sample rate).
+		2. Download John Kane’s creak detection package from https://github.com/jckane/Voice_Analysis_Toolkit.
+		3. Run apply_creak_detection.sh with the directory of ‘wav’ files to be analyzed as the argument 
+		   (An Output folder will be created in the given directory with ’txt’ files).
+		4. Change ‘txt’ extension of output files to ‘creak’ using convert_txt_to_creak.sh.
+		5. ____INPUT RELOCATION DIRECTIONS____
+	
+	Phase 3 (Reaper Analysis):
+		1. Download Google’s Reaper package from https://github.com/google/REAPER.
+		2. Run apply_reaper.sh with the directory to be analyzed as the argument
+		   (An Output folder will be created in the given directory with ’f0’ files).
+		   NOTE: this procedure assumes that the second data column in ‘f0’ files is pitchmark data that can also be obtained by 
+		   running the reaper program to obtain ‘pm’ files — somewhat thorough checking has been done to confirm this. To get 
+		   pitchmark data separately in ‘pm’ files, run apply_reaper.sh with line 20 commented out and line 19 uncommented.
+		3. ____INPUT RELOCATION DIRECTIONS____
+	
+	Phase 4 (VoiceSauce Analysis):
+		1. Download Yen Shue’s VoiceSauce package from http://www.seas.ucla.edu/spapl/voicesauce/
+		____COMPLETE INSTRUCTIONS____ make sure to say run in MATLAB
+
+	Phase 5 (Align Files):
+		____COMPLETE INSTRUCTIONS____
+		- remove carriage return from break, adjusted (?)
+		- run convert_to_15_intervals.py
+		
+
+
+Section 2: Creating Creak TextGrids for COSPRO and Childrens Corpus
+	1. Do Phase 1 and 2 from Section 1, except for Step 5 in Phase 2.
+	2. Run apply_txtGrid_converter.sh with the ONLY argument being the directory containing the ‘creak’ files from Section 1 Phase 2
+	   (An Output folder will be created in the given directory with ’TextGrid’ files).
+	3. ____INPUT RELOCATION DIRECTIONS____
+
+
+

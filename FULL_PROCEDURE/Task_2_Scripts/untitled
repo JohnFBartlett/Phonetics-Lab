@@ -1,0 +1,16 @@
+function output = fix_mat_parts(name)
+addpath(genpath(pwd));
+
+x = load(matching{1});
+
+x.Fs = 16000
+x.preemphasis = 0.9600
+x.AFMTalgorithm = 'Formants (Snack)'
+x.HFOalgorithm = 'F0 (Straight)'
+x.H2KFMTalgorithm = 'Formants (Snack)'
+x.BandwidthMethod = 'formula'
+x.windowsize = 25
+x.frameshift = 1
+
+save(name,'-struct','x');
+clear
