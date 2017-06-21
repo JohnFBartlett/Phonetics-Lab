@@ -1,0 +1,7 @@
+Children’s Corpus Steps
+
+1. Extracted first channel from each file with Audacity Script
+2. Listened to each file to determine which ones were usable
+3. Ran VoiceSauce Analysis on each usable file (ran in background for next few steps)
+4. For each usable file, created a syllable textGrid that labels syllable intervals
+5. Ran apply_TextGrid_labeler.sh which called textGrid_labeler.py on each file.

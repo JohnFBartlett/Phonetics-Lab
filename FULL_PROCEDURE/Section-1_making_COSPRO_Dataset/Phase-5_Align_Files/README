@@ -1,0 +1,13 @@
+Description of Files in Section 1 (Create Main Dataset for COSPRO corpora), Phase 5 (Align Files)
+
+
+convert_to_15_intervals.py: (aligns data from various analysis types with segments in adjusted/phn files into 15 intervals of data per segment)
+
+main function is format_files(partLength, adjusted, otherFile, outpath)
+params:	
+	- partLength: if otherFile is a directory, partlength indcates the number of seconds each file contains (either 5 or 10). This is for the when very large sound files had to be broken into smaller segments of 5 or 10 seconds to be analyzed.
+
+
+This script aligns data from various analysis types with segments in adjusted/phn files, arranging the data into 15 intervals of data per segment. It takes in a part length (for very large files that were split into parts; otherwise this field is ignored), adjusted or phn file containing segments and their intervals, another file of either creak or reaper data, and an output path. 
+
+The script navigates line by line through each adjusted 
