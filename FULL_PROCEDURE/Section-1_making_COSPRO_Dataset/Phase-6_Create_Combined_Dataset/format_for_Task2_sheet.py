@@ -80,6 +80,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         else:
             r = open(rrel, 'r')
         if measurements == 'N/A':
+            print("Couldn't find measurements")
             m = 0
         else:
             m = open(mrel, 'r')
@@ -216,7 +217,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 if b:
                     # print "bEnd is " + bEnd + "and prevStart is " + prevStart
                     while float(bEnd) <= float(prevStart):
-                        print "next 1"
+                        print("next 1")
                         # store previous break lines if needed
                         [backlog2_S, backlog2_E, backlog2_I] = [backlog1_S, backlog1_E, backlog1_I]
                         [backlog1_S, backlog1_E, backlog1_I] = [bStart, bEnd, bItem]
@@ -227,9 +228,9 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                                 bEnd = pieces[1]
                                 bItem = pieces[2]
                             bcount += 1
-                            print "PREVVVVVV"
-                            print bStart
-                            print "Break line a " + str(bcount)
+                            print("PREVVVVVV")
+                            print(bStart)
+                            print("Break line a " + str(bcount))
                         except StopIteration:
                             # print "out"
                             out.write('no more prev beg break data' + '\t')
@@ -320,7 +321,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 # would be no backlog to refer to, since bStart is the first line of the 
                 # break file. In this case I will just print the current break anyway.
                 elif backlog1_S == "":
-                    print "SPECIAL CASE: break file does not start at 0."
+                    print("SPECIAL CASE: break file does not start at 0.")
                     bItem = re.sub(r'(.*)\n', r'\1', bItem)
                     out.write(bItem + '\t')
 
@@ -341,7 +342,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                     out.write(backlog2_I + '\t')
                 elif not written:
                     out.write('No item within range' + '\t')
-                    print "currStart " + currStart + " not within " + bStart + " and " + bEnd
+                    print("currStart " + currStart + " not within " + bStart + " and " + bEnd)
                     # print "ba0: " + bStart + ", " + bEnd
                     # print "ba1: " + backlog1_S + ", " + backlog1_E
                     # print "ba2: " + backlog2_S + ", " + backlog2_E
@@ -369,7 +370,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                         # print bStart
                         # print "Break line b " + str(bcount)
                     except ValueError:
-                        print str(pieces)
+                        print(str(pieces))
                         raise ValueError("Line 332, line can't be split correctly")
                     except StopIteration:
                         out.write('no more curr end break data' + '\t')
@@ -418,7 +419,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                     for elem in creakValues:
                         out.write(elem + '\t')
                 except StopIteration:
-                    print "No more c lines"
+                    print("No more c lines")
                     out.write('no more creak data' + '\t')
                     written = 1
             else:
@@ -438,7 +439,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                     for elem in reaperValues:
                         out.write(elem + '\t')
                 except StopIteration:
-                    print "No more reaper lines"
+                    print("No more reaper lines")
                     out.write('no more reaper data' + '\t')
                     written = 1
             else:
@@ -457,8 +458,8 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                     mLine = re.sub(r'(.*)\n', r'\1', mLine)
                     out.write(mLine + '\n')
                 except StopIteration:
-                    print "measurement file finished"
-                    print "currStart " + currStart + " and currEnd " + currEnd
+                    print("measurement file finished")
+                    print("currStart " + currStart + " and currEnd " + currEnd)
                     out.write('no more measure data' + '\n')
                     written = 1
             else:
@@ -480,6 +481,9 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         # clear newline character
         name = re.sub(r'(.*)\n', r'\1', name)
         out.write(name + '\t')
+
+        senNum = re.sub(r'.*(\d+)$', r'\1', name)
+        out.write(senNum + '\t')
         
         # 2. get currSegment, vowel, times
         # clear newline character
@@ -521,7 +525,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         
         # 4. print break at beginning of previous segment (N/A) if none
         if first:
-                print "first iteration"
+                print("first iteration")
                 out.write('N/A' + '\t')
         else:
             written = 0
@@ -672,7 +676,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 for elem in creakValues:
                     out.write(elem + '\t')
             except StopIteration:
-                print "No more c lines"
+                print("No more c lines")
                 out.write('no more creak data' + '\t')
         else:
                 out.write('no data' + '\t')
@@ -689,7 +693,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 for elem in reaperValues:
                     out.write(elem + '\t')
             except StopIteration:
-                print "No more reaper lines"
+                print("No more reaper lines")
                 out.write('no more reaper data' + '\t')
         else:
                 out.write('no data' + '\t')
@@ -720,10 +724,10 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         r.close()
     if m:
         m.close()
-    print("Finished formatting.")
+    # print("Finished formatting.")
 
 def get_speech_style(rest):
-    print("style is" + rest)
+    # print("style is" + rest)
     if re.match(r'.*prg\d{3,4}sf', rest):
         return "Speaker Focus paragraph"
     elif re.match(r'.*prg\d{3,4}af1', rest):

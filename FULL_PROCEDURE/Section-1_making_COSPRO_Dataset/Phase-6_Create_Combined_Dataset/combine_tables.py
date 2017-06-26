@@ -10,7 +10,7 @@ from itertools import cycle
 
 def paste_files(directory, outName):
 
-    refdirectory = dirname('/Users/John/Desktop/COSPRO_DATA_BIN/Task2_Formatting')
+    refdirectory = dirname('/Users/John/Documents/Phonetics_Lab_Summer_2017')
         
     # otherwise, it should be a directory of .creak files
     if not isfile(directory): 
@@ -18,11 +18,11 @@ def paste_files(directory, outName):
             
         # Get all files in directory
         files = listdir(directory)
-        print(files)
+        # print(files)
 
 
         # check that correct type of files are in directory
-        if ".t2.txt" in files[1]:
+        if ".t2.txt" in files[3]:
             
             chdir(directory)
 
@@ -33,6 +33,8 @@ def paste_files(directory, outName):
             # go through files
             for f in files:
                 if "DS" in f:
+                    continue
+                if not files:
                     continue
                 print("adding " + f)
                 # f = abspath(f)

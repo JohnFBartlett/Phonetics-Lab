@@ -1,14 +1,15 @@
 #!/usr/bin/python
 
 import sys
-import re, Interval_Calculator
+import re
+
 from os import listdir, getcwd
 from os.path import isfile, relpath, dirname
 from itertools import cycle
 
 def format_files(partLength, adjusted, otherFile, outpath):
 
- 
+
 # ====================================================================       
     # DIRECTORY SECTION
 # ====================================================================
@@ -67,17 +68,17 @@ def format_files(partLength, adjusted, otherFile, outpath):
                     skip_a = choose_skip_line(name, currName)
                     # go to the next adjusted file if skip_a is true
                     if skip_a:
-                        print("Does not match " + currName)
-                        print("Skipping adjusted file "  + name)
+                        # print("Does not match " + currName)
+                        # print("Skipping adjusted file "  + name)
                         break
                     # otherwise go to the next .creak file instead
                     else:
-                        print("Does not match " + name)
-                        print("Skipping .creak file." + currName)
+                        # print("Does not match " + name)
+                        # print("Skipping .creak file." + currName)
                         currFile = otherFile + next(dircycle)
                         currName = re.sub(r'.*/(.*)', r'\1', currFile[:-6])
-                else:
-                    print("Name " + name + " matches creakName " + currName)
+                # else:
+                #     # print("Name " + name + " matches creakName " + currName)
                 if skip_a:
                     # go to next iteration
                     continue
@@ -120,16 +121,16 @@ def format_files(partLength, adjusted, otherFile, outpath):
     
                             # if the measurement time stamp is before a segment interval, skip it
                             while milltime < float(currStart):
-                                print("Creak line starts before adjusted, or is repeated.")
-                                print(currStart)
-                                print("milltime is " + str(milltime))
-                                print("segment line is " + currStart + ", " + currEnd + ", " + currSegment + '\n')
+                                # print("Creak line starts before adjusted, or is repeated.")
+                                # print(currStart)
+                                # print("milltime is " + str(milltime))
+                                # print("segment line is " + currStart + ", " + currEnd + ", " + currSegment + '\n')
     
                                 try:
                                     cline = next(c)
-                                    print("new line is " + cline)
+                                    # print("new line is " + cline)
                                 except:
-                                    print("No more lines left in creak file.")
+                                    # print("No more lines left in creak file.")
                                     break
 
                                 [time, creak] = cline.split(',')
@@ -139,14 +140,15 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             # gather all measurement lines that are within segment range
                             while milltime >= float(currStart) and milltime <= float(currEnd):
                                 # print "file " + name
-                                # print str(milltime) + " is between currStart: " + currStart + " and currEnd: " + currEnd
+                                # print(str(milltime) + " is between currStart: "
+                                # + currStart + " and currEnd: " + currEnd)
                                 lines.append([milltime, float(creak)])
                                 counter += 1
     
                                 try:
                                     cline = next(c)
                                 except:
-                                    print("No more lines left in creak file.")
+                                    # print("No more lines left in creak file.")
                                     break
 
                                 [time, creak] = cline.split(',')
@@ -156,16 +158,24 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             # average creak value
                             # print time range, 
                             if counter != 0:
-                                creak_averages = calculate_interval_values(float(currStart), float(currEnd), lines)
+                                creak_averages = IntervalCalculator.calculate_interval_values(float(currStart),
+                                                                                              float(currEnd), lines)
+                                out.write(currStart + '\t' + currEnd + '\t')
+                                # goes to 16 instead of 15 because the first value is the average
+                                for i in range(16):
+                                    out.write(str(creak_averages[i]))
+                                    if i < 15:
+                                        out.write('\t')
+                                out.write('\n')
 
                             # if there are no creak lines within the range
                             # which would be if the segment interval is too small,
                             # just take the previous creak line -- it should be very close
                             else:
-                                print("NO CREAK LINE BETWEEN INTERVAL, taking previous.")
-                                print("=====================================")
-                                print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(float(creak)))
-                                print("=====================================")
+                                # print("NO CREAK LINE BETWEEN INTERVAL, taking previous.")
+                                # print("=====================================")
+                                # print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(float(creak)))
+                                # print("=====================================")
                                 out.write(currStart + '\t' + currEnd + '\t' + str(float(creak)) + '\t')
                                 for i in range(15):
                                     out.write(str(float(creak)))
@@ -178,11 +188,11 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             lines = []
                             counter = 0
 
-                    print("Done with file " + name)
+                    print("Formatted file " + name)
                     out.close()
         elif ".f0" in otherFiles[1]:
             print("Files are .f0")
-            print(otherFiles)
+            # print(otherFiles)
             # boolean that says whether to skip the rest of the adjusted file
             skip_a = False
             # get first
@@ -216,17 +226,17 @@ def format_files(partLength, adjusted, otherFile, outpath):
                     skip_a = choose_skip_line(name, currName)
                     # go to the next adjusted file if skip_a is true
                     if skip_a:
-                        print("Skipping adjusted file " + name)
-                        print("Does not match " + currName)
+                        # print("Skipping adjusted file " + name)
+                        # print("Does not match " + currName)
                         break
                     # otherwise go to the next .creak file instead
                     else:
-                        print("Skipping .f0 file " + currName)
-                        print("Does not match " + name)
+                        # print("Skipping .f0 file " + currName)
+                        # print("Does not match " + name)
                         currFile = otherFile + next(dircycle)
                         currName = re.sub(r'.*/(.*)', r'\1', currFile[:-3])
-                else:
-                    print("Name " + name + " matches creakName " + currName)
+                # else:
+                #     # print("Name " + name + " matches creakName " + currName)
                 if skip_a:
                     # go to next iteration
                     continue
@@ -289,7 +299,7 @@ def format_files(partLength, adjusted, otherFile, outpath):
                                     cline = next(c)
                                     # print "next line" + cline
                                 except:
-                                    print("No more lines left in f0 file.")
+                                    # print("No more lines left in f0 file.")
                                     break
 
                                 [time, pm, f0] = cline.split(' ')
@@ -308,7 +318,7 @@ def format_files(partLength, adjusted, otherFile, outpath):
                                     cline = next(c)
                                     # print "next line " + cline
                                 except:
-                                    print("No more lines left in f0 file.")
+                                    # print("No more lines left in f0 file.")
                                     break
 
                                 [time, pm, f0] = cline.split(' ')
@@ -316,87 +326,25 @@ def format_files(partLength, adjusted, otherFile, outpath):
                                 milltime = 1000*float(time)
                                 # print milltime
     
-                            # average creak value
-                            # print time range, 
-                            # print " counter is " + str(counter)
+                            # average f0 value
                             if counter != 0:
-                                justf0vals = [elem[1] for elem in lines]
-                                justpmvals = [elem[2] for elem in lines]
-                                avgf0 = float(sum(justf0vals) / float(counter))
-                                avgpm = float(sum(justpmvals) / float(counter))
-
-                                # assign creak_vals 1-15
-                                # - make an iterator for the available lines
-                                lns = iter(lines)
-                                [curr_time, curr_f0, curr_pm] = next(lns)
-                                no_more = False
-                                try:
-                                    [next_time, next_f0, next_pm] = next(lns)
-                                except StopIteration:
-                                    # this is the case when only 1 creak is within the seg interval
-                                    # so, these values should be printed for all 15 intervals
-                                    # print "Just one line " + str([curr_time, curr_f0, curr_pm])
-                                    no_more = True
-                                if no_more:
-                                    f0_vals = [curr_f0] * 15
-                                    pm_vals = [curr_pm] * 15
-                                else:
-                                    # - for each interval, see which line is closest
-                                    f0_vals = []
-                                    pm_vals = []
-                                    interval = (float(currEnd) - float(currStart))/15.0
-                                    # print "Number of justvals is " + str(len(justvals))
-                                    for i in range(15):
-                                        if no_more:
-                                            f0_vals.append(next_f0)
-                                            pm_vals.append(next_pm)
-                                        else:
-                                            comp = (float(i) * interval) + float(currStart)
-                                            while next_time < comp:
-                                                if no_more:
-                                                    break
-                                                try:
-                                                    [curr_time, curr_f0, curr_pm] = [next_time, next_f0, next_pm]
-                                                    [next_time, next_f0, next_pm] = next(lns)
-                                                except StopIteration:
-                                                    # there are no more items in lns, so the rest should be next_
-                                                    no_more = True
-                                            # see which time is closest
-                                            currdiff = abs(comp - curr_time)
-                                            nextdiff = abs(comp - next_time)
-                                            if currdiff < nextdiff:
-                                                # print "Currdiff " + str(currdiff) + " is less than Nextdiff " + str(nextdiff)
-                                                # print "Curr, " + str(curr_time) + " is closer to " + str(comp) + " than " + str(next_time)
-                                                f0_vals.append(curr_f0)
-                                                pm_vals.append(curr_pm)
-                                            else:
-                                                # print "Nextdiff " + str(nextdiff) + " is less than Currdiff " + str(currdiff)
-                                                # print "Next, " + str(next_time) + " is closer to " + str(comp) + " than " + str(curr_time)
-                                                f0_vals.append(next_f0)
-                                                pm_vals.append(next_pm)
-
-                                # print "Justf0vals is   " + str(justf0vals)
-                                # print "f0_vals is " + str(f0_vals)
-                                # print("=====================================")
-                                # print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(avgf0) + '\t' + str(avgpm))
-                                # # print("Length of f0_vals is " + str(len(f0_vals)))
-                                # print("=====================================")
-
-                                out.write(currStart + '\t' + currEnd + '\t' + str(avgf0) + '\t')
-                                for i in range(15):
-                                    out.write(str(f0_vals[i]) + '\t')
-                                out.write(str(avgpm) + '\t')
-                                for i in range(15):
-                                    out.write(str(pm_vals[i]))
-                                    if i < 14:
+                                f0_averages = IntervalCalculator.calculate_f0_interval_values(float(currStart), float(currEnd), lines)
+                                out.write(currStart + '\t' + currEnd + '\t')
+                                # goes to 32 bc of f0 and pm averages plus intervals
+                                for i in range(32):
+                                    try:
+                                        out.write(str(f0_averages[i]))
+                                    except:
+                                        print("Not enough values in creak list!")
+                                    if i < 32:
                                         out.write('\t')
                                 out.write('\n')
     
                             else:
-                                print("NO CREAK LINE BETWEEN INTERVAL, taking previous.")
-                                print("=====================================")
-                                print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(float(f0)) + '\t' + str(float(pm)))
-                                print("=====================================")
+                                # print("NO f0 LINE BETWEEN INTERVAL, taking previous.")
+                                # print("=====================================")
+                                # print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(float(f0)) + '\t' + str(float(pm)))
+                                # print("=====================================")
                                 out.write(currStart + '\t' + currEnd + '\t' + str(avgf0) + '\t')
                                 for i in range(15):
                                     out.write(str(avgf0))
@@ -415,7 +363,7 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             avgf0 = 0
                             counter = 0
 
-                    print("Done with file " + name)
+                    print("Formatted file " + name)
                     out.close()
         else:
             print("Directory contains the wrong type of files! (need .creak, .f0 or .pm)")
@@ -471,7 +419,6 @@ def choose_skip_lineCC(adjName, mName):
 # determine whether a line in adjusted or in measures should be skipped
 # do this by getting gradient numbers and skipping the one that is more behind
 def choose_skip_line(adjName, mName):
-    print("comparing")
     try:
         adjValues = re.sub(r'.*_\d{2}_(\w{1,2})(\d{2,4})(\w+?)(\d{3,4}).*', r'\1 \2 \3 \4', adjName)
         [adjgender, adjspeakId, adjfiletype, adjnum] = adjValues.split(' ')
@@ -484,7 +431,7 @@ def choose_skip_line(adjName, mName):
             adjTypeNo = 2
     except:
         # if it doesn't fit the regex, skip it
-        print("Failed COSPRO comparison")
+        print("Failed COSPRO comparison: " + adjName)
         return choose_skip_lineCC(adjName, mName)
     try:
         mValues = re.sub(r'.*_\d{2}_(\w{1,2})(\d{2,4})(\w+?)(\d{3,4}).*', r'\1 \2 \3 \4', mName)
@@ -498,20 +445,20 @@ def choose_skip_line(adjName, mName):
             mTypeNo = 2
     except:
         # if it doesn't fit the regex, skip it
-        print("Failed COSPRO comparison")
+        print("Failed COSPRO comparison: " + mName)
         return False
     # print(adjspeakId + ',' + adjfiletype + ',' + adjnum)
     # print(mspeakId + ',' + mfiletype + ',' + mnum)
 
     # see if they are the same gender
     if adjgender in mgender:
-        print('check1 gender is same')
+        # print('check1 gender is same')
         # see if they are the same speaker
         if int(adjspeakId) == int(mspeakId):
-            print('check2 is same')
+            # print('check2 is same')
             # see if they are the same filetype (phr vs. w vs. prg.)
             if adjfiletype in mfiletype:
-                print('check3 type is same')
+                # print('check3 type is same')
                 # see if they are they same file number
                 if int(adjnum) == int(mnum):
                     if adjTypeNo == mTypeNo:
@@ -566,27 +513,160 @@ def choose_skip_line(adjName, mName):
         # print(mspeakId + ',' + mfiletype + ',' + mnum + ' (m) is before ' + adjspeakId + ',' + adjfiletype + ',' + adjnum)
         return False
 
-# sample command python ~/Desktop/Phonetics_Lab_Work/Task_2_Scripts/convert_to_15_intervals.py creak COSPRO_01/ 10
-refdirectory = dirname('/Users/John/Documents/COSPRO_DATA_BIN/Task2_Formatting/')
-if sys.argv[1] == 'creak':
-    if not 'COSPRO_0' in sys.argv[2]:
-        if not 'Child' in sys.argv[2]:
-            print(sys.argv[2])
-            raise ValueError("Wrong input.")
-    segAddress = refdirectory + '/2-Formatted_Segments/' + sys.argv[2]
-    print(segAddress)
-    creakAddress = refdirectory + '/1-Raw_Creaks/' + sys.argv[2]
-    outAddress = refdirectory + '/2-Formatted_Creak/' + sys.argv[2]
-    format_files(sys.argv[3], segAddress, creakAddress, outAddress)
-elif sys.argv[1] == 'reaper':
-    if not 'COSPRO_0' in sys.argv[2]:
-        if not 'Child' in sys.argv[2]:
-            print(sys.argv[2])
-            raise ValueError("Wrong input.")
-    segAddress = refdirectory + '/2-Formatted_Segments/' + sys.argv[2]
-    print(segAddress)
-    reapAddress = refdirectory + '/1-Raw_Reaper_Results/' + sys.argv[2]
-    outAddress = refdirectory + '/2-Formatted_Reaper_Results/' + sys.argv[2]
-    format_files(sys.argv[3], segAddress, reapAddress, outAddress)
-else:
-    format_files(sys.argv[4], sys.argv[1], sys.argv[2], sys.argv[3])
+
+class IntervalCalculator:
+    # takes in the start time of a segment, the end time of the same segment,
+    # and the list of creak values (paired with their timestamps)
+    # that fall within the segment's start and end times
+    #
+    # returns an array containing the overall average creak value followed
+    # by the 15 interval averages for the given segment
+    @staticmethod
+    def calculate_interval_values(startTime, endTime, creakList):
+        output = []
+        # print(creakList)
+        # first get average
+        just_vals = [elem[1] for elem in creakList]
+        avg_val = sum(just_vals) / float(len(just_vals))
+        output.append(avg_val)
+
+        interval = (endTime - startTime) / 15.0
+        creaks = iter(creakList)
+        prev = ''
+        curr = next(creaks)
+        # print('Curr: ' + str(curr))
+        for i in range(0, 15):
+            startInterval = startTime + i * interval
+            endInterval = startTime + (i + 1) * interval
+            tempList = []
+            while curr[0] < endInterval and curr[0] >= startInterval:
+                tempList.append(curr[1])
+                prev = curr
+                try:
+                    curr = next(creaks)
+                except StopIteration:
+                    break
+            if not tempList:
+                if not prev:
+                    tempList.append(curr[1])
+                else:
+                    middle = startInterval + interval / 2
+                    if abs(middle - prev[0]) < abs(curr[0] - middle):
+                        tempList.append(prev[1])
+                    else:
+                        tempList.append(curr[1])
+            # print("List of values for interval " + str(i) + ": " + str(tempList))
+            interval_entry = float(sum(tempList)) / float(len(tempList))
+            # print("Interval entry = " + str(interval_entry))
+            output.append(interval_entry)
+        # print("Printing output")
+        # print(output)
+        return output
+
+    @staticmethod
+    def calculate_f0_interval_values(startTime, endTime, valuesList):
+        output = []
+        # print(valuesList)
+        # print('Getting f0 averages.')
+        # first get average
+        f0_vals = [elem[1] for elem in valuesList]
+        avg_f0_val = sum(f0_vals) / float(len(f0_vals))
+        output.append(avg_f0_val)
+
+        interval = (endTime - startTime) / 15.0
+        values = iter(valuesList)
+        prev = ''
+        curr = next(values)
+        # print('Curr: ' + str(curr))
+        for i in range(0, 15):
+            startInterval = startTime + i * interval
+            endInterval = startTime + (i + 1) * interval
+            tempList = []
+            while endInterval > curr[0] >= startInterval:
+                tempList.append(curr[1])
+                prev = curr
+                try:
+                    curr = next(values)
+                except StopIteration:
+                    break
+            if not tempList:
+                if not prev:
+                    tempList.append(curr[1])
+                else:
+                    middle = startInterval + interval / 2
+                    if abs(middle - prev[0]) < abs(curr[0] - middle):
+                        tempList.append(prev[1])
+                    else:
+                        tempList.append(curr[1])
+            # print("List of values for interval " + str(i) + ": " + str(tempList))
+            interval_entry = float(sum(tempList)) / float(len(tempList))
+            # print("Interval entry = " + str(interval_entry))
+            output.append(interval_entry)
+
+        # print('Getting pitchmark averages.')
+        try:
+            pm_vals = [elem[2] for elem in valuesList]
+            avg_pm_val = sum(pm_vals) / float(len(pm_vals))
+            output.append(avg_pm_val)
+        except:
+            print("Input doesn't have pm column!")
+            return None
+
+        interval = (endTime - startTime) / 15.0
+        values = iter(valuesList)
+        prev = ''
+        curr = next(values)
+        for i in range(0, 15):
+            startInterval = startTime + i * interval
+            endInterval = startTime + (i + 1) * interval
+            tempList = []
+            while endInterval > curr[0] >= startInterval:
+                tempList.append(curr[2])
+                prev = curr
+                try:
+                    curr = next(values)
+                except StopIteration:
+                    break
+            if not tempList:
+                if not prev:
+                    tempList.append(curr[2])
+                else:
+                    middle = startInterval + interval / 2
+                    if abs(middle - prev[0]) < abs(curr[0] - middle):
+                        tempList.append(prev[2])
+                    else:
+                        tempList.append(curr[2])
+            # print("List of values for interval " + str(i) + ": " + str(tempList))
+            interval_entry = float(sum(tempList)) / float(len(tempList))
+            # print("Interval entry = " + str(interval_entry))
+            output.append(interval_entry)
+        # print("Printing output")
+        # print(output)
+        return output
+
+if __name__ == '__main__':
+    # sample command python ~/Desktop/Phonetics_Lab_Work/Task_2_Scripts/convert_to_15_intervals.py creak COSPRO_01/ 10
+    refdirectory = dirname('/Users/John/Documents/Phonetics_Lab_Summer_2017/'
+                           'Phonetics-Lab/COSPRO_DATA_BIN/data_analysis/')
+    if sys.argv[1] == 'creak':
+        if not 'COSPRO_0' in sys.argv[2]:
+            if not 'Child' in sys.argv[2]:
+                print(sys.argv[2])
+                raise ValueError("Wrong input.")
+        segAddress = refdirectory + '/2-Formatted_Segments/' + sys.argv[2]
+        print(segAddress)
+        creakAddress = refdirectory + '/1-Raw_Creaks/' + sys.argv[2]
+        outAddress = refdirectory + '/2-Formatted_Creak/' + sys.argv[2]
+        format_files(sys.argv[3], segAddress, creakAddress, outAddress)
+    elif sys.argv[1] == 'reaper':
+        if not 'COSPRO_0' in sys.argv[2]:
+            if not 'Child' in sys.argv[2]:
+                print(sys.argv[2])
+                raise ValueError("Wrong input.")
+        segAddress = refdirectory + '/2-Formatted_Segments/' + sys.argv[2]
+        print(segAddress)
+        reapAddress = refdirectory + '/1-Raw_Reaper_Results/' + sys.argv[2]
+        outAddress = refdirectory + '/2-Formatted_Reaper_Results/' + sys.argv[2]
+        format_files(sys.argv[3], segAddress, reapAddress, outAddress)
+    else:
+        format_files(sys.argv[4], sys.argv[1], sys.argv[2], sys.argv[3])

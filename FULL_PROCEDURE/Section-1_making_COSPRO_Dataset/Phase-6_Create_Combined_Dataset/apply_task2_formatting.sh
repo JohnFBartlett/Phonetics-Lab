@@ -12,10 +12,11 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 	fi
 	for file in $PLACE*.adjusted_fixed; do
 		# echo "=======================FILESTART=============="
-		echo executing file $file ...
+
 		# VAR=${file%.*}
 		ADJ=${file##*/}
 		NAME=${ADJ%.*}
+		echo executing file $NAME ...
 		# check if each folder exists, assign N/A if not
 		if [ -f './2-Formatted_Break/'$1$NAME'.break_fixed' ]; then
 			BREAK='./2-Formatted_Break/'$1$NAME'.break_fixed'
@@ -47,15 +48,15 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 		# echo creak $CREAK
 		# echo reaper $REAP
 		# echo meas $MEAS
-		python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_\(Create_Combined_Dataset\)/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1
+		python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1parts/
 	done
 	for file in $PLACE*.phn_fixed; do
 		# echo "=======================FILESTART=============="
 		if [ -f $file ]; then
-			echo executing file $file ...
 			# VAR=${file%.*}
 			ADJ=${file##*/}
 			NAME=${ADJ%.*}
+			echo executing file $NAME ...
 			# check if each folder exists, assign N/A if not
 			if [ -f './2-Formatted_Break/'$1$NAME'.break_fixed' ]; then
 				BREAK='./2-Formatted_Break/'$1$NAME'.break_fixed'
@@ -87,7 +88,7 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 			# echo creak $CREAK
 			# echo reaper $REAP
 			# echo meas $MEAS
-			python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_\(Create_Main_Dataset_for_COSPRO_corpora\)/Phase-6_\(Create_Combined_Dataset\)/format_for_Task2_sheet.py/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1/
+			python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1/parts/
 		fi
 	done
 else

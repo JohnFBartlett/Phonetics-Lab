@@ -5,11 +5,13 @@ from os import listdir
 from os.path import isfile, relpath, dirname
 from itertools import cycle
 
+
 def split_measures(packedFile, outpath):
 
     if isfile(packedFile):
         if ".txt" in packedFile:
             name = ''
+            # print("Opening " + packedFile)
             with open(packedFile, 'r') as m:
                 # get header line
                 header = next(m)
@@ -29,5 +31,7 @@ def split_measures(packedFile, outpath):
 
         else:
             raise ValueError("Wrong file type: need .txt")
+    else:
+        print("First argument needs to be packed file")
 
 split_measures(sys.argv[1], sys.argv[2])
