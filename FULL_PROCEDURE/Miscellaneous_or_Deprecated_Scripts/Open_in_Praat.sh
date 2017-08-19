@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # see how many arguments there are
-if [ "$#" -ge 1 ]; then
-	echo "Multiple argument version not finished yet."
+if [ "$#" -e 2 ]; then
+    if [[ "$2" = "COSPRO" ]]; then
+	    OTHER=$1
+
 
 # otherwise take user through directory
 else

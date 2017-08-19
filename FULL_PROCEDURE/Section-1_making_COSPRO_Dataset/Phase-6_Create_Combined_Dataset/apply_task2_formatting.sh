@@ -1,6 +1,14 @@
-#! bin/bash
+#!/bin/bash
 
 if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
+
+    if [[ $# -ne 2 ]]; then
+        echo "Please provide log file name as second argument"
+        quit
+    fi
+    # remove log file
+    rm $2
+
 	echo Applying task 2 formatting to files in $1
 	cd ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/COSPRO_DATA_BIN/data_analysis/
 	PLACE='./2-Formatted_Segments/'$1
@@ -16,9 +24,9 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 		# VAR=${file%.*}
 		ADJ=${file##*/}
 		NAME=${ADJ%.*}
-		echo executing file $NAME ...
+		# echo -ne "executing file $NAME ... \r"
 		# check if each folder exists, assign N/A if not
-		if [ -f './2-Formatted_Break/'$1$NAME'.break_fixed' ]; then
+		if [ -f './2-Formatted_Break/'${1}${NAME}'.break_fixed' ]; then
 			BREAK='./2-Formatted_Break/'$1$NAME'.break_fixed'
 		else
 			BREAK='N/A'
@@ -48,7 +56,7 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 		# echo creak $CREAK
 		# echo reaper $REAP
 		# echo meas $MEAS
-		python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1parts/
+		python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1parts/ $2
 	done
 	for file in $PLACE*.phn_fixed; do
 		# echo "=======================FILESTART=============="
@@ -56,7 +64,7 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 			# VAR=${file%.*}
 			ADJ=${file##*/}
 			NAME=${ADJ%.*}
-			echo executing file $NAME ...
+			# echo -ne "executing file $NAME ... \r"
 			# check if each folder exists, assign N/A if not
 			if [ -f './2-Formatted_Break/'$1$NAME'.break_fixed' ]; then
 				BREAK='./2-Formatted_Break/'$1$NAME'.break_fixed'
@@ -88,7 +96,7 @@ if [[ "$1" == *"COSPRO_0"* ]] || [[ "$1" == *"Child"* ]] ; then
 			# echo creak $CREAK
 			# echo reaper $REAP
 			# echo meas $MEAS
-			python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1/parts/
+			python2.6 ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py $file $BREAK $CREAK $REAP $MEAS ./3-Combined/$1/parts/ $2
 		fi
 	done
 else

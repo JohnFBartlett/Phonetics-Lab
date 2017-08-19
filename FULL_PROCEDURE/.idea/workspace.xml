@@ -5,14 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ff454b2-3d69-40f7-8cb6-1830e229e465" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/interval_calculator.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/Interval_Calculator.py" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV3.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_scriptV3.sh" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../README.md" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/John.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/John.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Miscellaneous_or_Deprecated_Scripts/Open_in_Praat.sh" afterPath="$PROJECT_DIR$/Miscellaneous_or_Deprecated_Scripts/Open_in_Praat.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_script.sh" afterPath="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_script.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Section-3_making_TextGrids/creak_textGrid_maker.py" afterPath="$PROJECT_DIR$/Section-3_making_TextGrids/creak_textGrid_maker.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,51 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="master_script.sh" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_script.sh">
+      <file leaf-file-name="get_creak_accuracy.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../COSPRO_DATA_BIN/data_analysis/creak_quality_testing/checked/all_TextGrid/get_creak_accuracy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="203" column="6" lean-forward="true" selection-start-line="203" selection-start-column="6" selection-end-line="203" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="split_measures.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="14" column="12" lean-forward="false" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="apply_task2_formatting.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="70" column="18" lean-forward="false" selection-start-line="70" selection-start-column="18" selection-end-line="70" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="format_for_Task2_sheet.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="485" column="32" lean-forward="false" selection-start-line="485" selection-start-column="32" selection-end-line="485" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="combine_tables.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state relative-caret-position="135">
+              <caret line="11" column="18" lean-forward="true" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -85,6 +50,7 @@
       <find>print</find>
       <find>style is</find>
       <find>measurement fil</find>
+      <find>wri</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -96,16 +62,24 @@
         <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-4_(Voicesauce_Analysis)/combine_parts.py" />
         <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-3_(Reaper_Analysis)/apply_reaper.sh" />
         <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/interval_calculator.py" />
-        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py" />
-        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py" />
-        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh" />
-        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py" />
         <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py" />
+        <option value="$PROJECT_DIR$/Section-3_making_TextGrids/creak_textGrid_maker.py" />
+        <option value="$PROJECT_DIR$/Section-3_making_TextGrids/apply_TextGrid_combiner.sh" />
+        <option value="$PROJECT_DIR$/Miscellaneous_or_Deprecated_Scripts/Open_in_Praat.sh" />
+        <option value="$PROJECT_DIR$/Section-3_making_TextGrids/combined_creak_and_segment" />
+        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py" />
+        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh" />
         <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_script.sh" />
+        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py" />
+        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/check_columns.py" />
+        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py" />
+        <option value="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV3.py" />
+        <option value="$PROJECT_DIR$/../COSPRO_DATA_BIN/data_analysis/creak_quality_testing/checked/all_TextGrid/get_creak_accuracy.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="5" />
     <option name="y" value="23" />
     <option name="width" value="1343" />
     <option name="height" value="789" />
@@ -126,7 +100,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -136,6 +109,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="FULL_PROCEDURE" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FULL_PROCEDURE" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FULL_PROCEDURE" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Section-3_making_TextGrids" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -235,16 +222,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Section-1_making_COSPRO_Dataset" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Phase-2_Creak_Analysis" />
+              <option name="myItemId" value="Miscellaneous_or_Deprecated_Scripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -254,12 +238,14 @@
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset" />
+      <recent name="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files" />
+      <recent name="$USER_HOME$/Desktop" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files" />
       <recent name="$PROJECT_DIR$/Section-1_making_COSPRO_Dataset" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$USER_HOME$/Desktop" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -396,7 +382,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1343" height="789" extended-state="0" />
+    <frame x="5" y="23" width="1343" height="789" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26061058" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -427,27 +413,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_script.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3675">
-          <caret line="245" column="26" lean-forward="false" selection-start-line="245" selection-start-column="26" selection-end-line="245" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1065">
-          <caret line="71" column="14" lean-forward="true" selection-start-line="71" selection-start-column="14" selection-end-line="71" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6930">
           <caret line="462" column="32" lean-forward="false" selection-start-line="462" selection-start-column="31" selection-end-line="462" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -455,7 +424,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -463,7 +431,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2985">
           <caret line="203" column="45" lean-forward="false" selection-start-line="203" selection-start-column="45" selection-end-line="203" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -471,7 +438,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1920">
           <caret line="128" column="21" lean-forward="false" selection-start-line="128" selection-start-column="21" selection-end-line="128" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -479,11 +445,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2385">
           <caret line="164" column="45" lean-forward="false" selection-start-line="164" selection-start-column="45" selection-end-line="164" selection-end-column="45" />
-          <folding>
-            <element signature="e#19#29#0" expanded="true" />
-            <element signature="e#17884#19332#0" expanded="false" />
-            <element signature="e#19525#23740#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -499,7 +461,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -507,7 +468,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6900">
           <caret line="460" column="42" lean-forward="false" selection-start-line="460" selection-start-column="27" selection-end-line="460" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -515,7 +475,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="14" column="35" lean-forward="true" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -523,11 +482,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1680">
           <caret line="117" column="34" lean-forward="false" selection-start-line="117" selection-start-column="34" selection-end-line="117" selection-end-column="34" />
-          <folding>
-            <element signature="e#19#29#0" expanded="true" />
-            <element signature="e#17884#19332#0" expanded="false" />
-            <element signature="e#19525#23740#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -535,7 +490,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2985">
           <caret line="203" column="45" lean-forward="false" selection-start-line="203" selection-start-column="45" selection-end-line="203" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -543,7 +497,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1920">
           <caret line="128" column="21" lean-forward="false" selection-start-line="128" selection-start-column="21" selection-end-line="128" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -559,11 +512,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#19#29#0" expanded="true" />
-            <element signature="e#17884#19332#0" expanded="false" />
-            <element signature="e#19525#23740#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -619,6 +568,21 @@
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-2_(Creak_Analysis)/make_file_for_creakyDetection.m" />
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-4_(Voicesauce_Analysis)/combine_parts.py" />
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-3_(Reaper_Analysis)/apply_reaper.sh" />
+    <entry file="file://$USER_HOME$/Desktop/master_script.sh" />
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2985">
+          <caret line="203" column="45" lean-forward="false" selection-start-line="203" selection-start-column="45" selection-end-line="203" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/interval_calculator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1920">
+          <caret line="128" column="21" lean-forward="false" selection-start-line="128" selection-start-column="21" selection-end-line="128" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-3_Reaper_Analysis/apply_reaper.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -633,71 +597,143 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/master_script.sh" />
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervals.py">
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert to 15 intervals.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2985">
-          <caret line="203" column="45" lean-forward="false" selection-start-line="203" selection-start-column="45" selection-end-line="203" selection-end-column="45" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_scriptV3.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-3_making_TextGrids/untitled" />
+    <entry file="file://$PROJECT_DIR$/Section-3_making_TextGrids/apply_txtGrid_converter.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-3_making_TextGrids/creak_textGrid_maker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="17" column="31" lean-forward="false" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Miscellaneous_or_Deprecated_Scripts/Open_in_Praat.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="8" lean-forward="false" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-3_making_TextGrids/combined_creak_and_segment">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-3_making_TextGrids/apply_TextGrid_combiner.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/log.txt" />
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="26" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/interval_calculator.py">
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2017.1/python_stubs/776880377/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1920">
-          <caret line="128" column="21" lean-forward="false" selection-start-line="128" selection-start-column="21" selection-end-line="128" selection-end-column="21" />
-          <folding />
+        <state relative-caret-position="231">
+          <caret line="5057" column="8" lean-forward="false" selection-start-line="5057" selection-start-column="8" selection-end-line="5057" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="161" column="94" lean-forward="false" selection-start-line="161" selection-start-column="94" selection-end-line="161" selection-end-column="94" />
-          <folding>
-            <element signature="e#19#29#0" expanded="true" />
-            <element signature="e#17884#19332#0" expanded="false" />
-            <element signature="e#19525#23740#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="70" column="18" lean-forward="false" selection-start-line="70" selection-start-column="18" selection-end-line="70" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="485" column="32" lean-forward="false" selection-start-line="485" selection-start-column="32" selection-end-line="485" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="14" column="12" lean-forward="false" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        <state relative-caret-position="195">
+          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/master_script.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="203" column="6" lean-forward="true" selection-start-line="203" selection-start-column="6" selection-end-line="203" selection-end-column="6" />
+        <state relative-caret-position="3960">
+          <caret line="264" column="0" lean-forward="false" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5310">
+          <caret line="359" column="33" lean-forward="false" selection-start-line="359" selection-start-column="33" selection-end-line="359" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10455">
+          <caret line="702" column="23" lean-forward="false" selection-start-line="702" selection-start-column="23" selection-end-line="702" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-4_Voicesauce_Analysis/combine_mat_parts.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="8" lean-forward="false" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="27" column="48" lean-forward="false" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/format_for_Task2_sheet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="641">
+          <caret line="344" column="37" lean-forward="false" selection-start-line="344" selection-start-column="37" selection-end-line="344" selection-end-column="37" />
+          <folding>
+            <element signature="e#22#32#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/check_columns.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="14" column="22" lean-forward="false" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+          <folding>
+            <element signature="e#18#27#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../COSPRO_DATA_BIN/data_analysis/creak_quality_testing/checked/all_TextGrid/get_creak_accuracy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="18" lean-forward="true" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
           <folding />
         </state>
       </provider>

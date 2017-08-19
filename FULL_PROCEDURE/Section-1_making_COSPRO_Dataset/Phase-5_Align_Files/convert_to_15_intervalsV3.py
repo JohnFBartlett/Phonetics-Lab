@@ -8,44 +8,54 @@ from os.path import isfile, relpath, dirname
 from itertools import cycle
 
 
-def format_files(partLength, adjusted, otherFile, outpath):
+def format_files(part_length, adjusted, other_file, outpath, log_name):
+
     # ====================================================================
     # DIRECTORY SECTION
     # ====================================================================
+    if isfile(log_name):
+        log = open(log_name, 'a')
+    else:
+        log = open(log_name, 'w')
+        
+    log.write("convert_to_15_intervalsV2.py calls format_files(" + str(part_length) + ", "
+              + str(adjusted) + ", " + str(other_file) + ", " + str(outpath) + ", " + str(log_name) + ")")
 
-    # otherwise, it should be a directory of .creak files
-    if not isfile(otherFile):
-        print("directory")
+    if not isfile(other_file):
+        log.write("directory")
 
         # check if adjusted is a directory
         if isfile(adjusted):
             print("Please enter a directory of adjusted files.")
-
+            log.write("Please enter a directory of adjusted files.")
+            log.close()
+            return
+            
         # if so, get all files in directory
-        aFiles = listdir(adjusted)
-        # print aFiles
+        a_files = listdir(adjusted)
+        log.write(str(a_files))
         # get file in other directory
-        otherFiles = listdir(otherFile)
-        # print "oth is " + str(otherFiles)
+        other_files = listdir(other_file)
+        log.write("oth is " + str(other_files))
         # make iterator
-        dircycle = cycle(otherFiles)
-
+        dircycle = cycle(other_files)
+    
         # create variables for averaging
         lines = []
         counter = 0
         avgline = float(0)
 
-        # print("Otherfiles[1] is " + otherFiles[1])
+        log.write("Otherfiles[1] is " + other_files[1])
 
         # check what type of files are in directory
-        if ".creak" in otherFiles[1]:
-
+        if ".creak" in other_files[1]:
+            
             # boolean that says whether to skip the rest of the adjusted file
             skip_a = False
-            currName = ''
+            curr_name = ''
 
             # print(files)
-            for f in aFiles:
+            for f in a_files:
                 # remove adjusted extension
                 if "DS" in f:
                     continue
@@ -53,31 +63,39 @@ def format_files(partLength, adjusted, otherFile, outpath):
                     name = f[:-10]
                 else:
                     name = f[:-15]
-                # print("name is " + name)
-
+                    log.write("name is " + name)
+                
                 f = adjusted + f
-                # print "f is " + f
+                log.write("f is " + f)
 
                 # check that they have the same name
-                while name != currName:
-                    # print "==========================="
-                    # print "Filenames do not match up!"
-                    # print "name is " + name + " and currName is " + currName
-                    # print "==========================="
-                    skip_a = choose_skip_line(name, currName)
+                while name != curr_name:
+                    log.write("===========================")
+                    log.write("Filenames do not match up!")
+                    log.write("name is " + name + " and curr_name is " + curr_name)
+                    log.write("===========================")
+
+                    # close and reopen log file before and after function call
+                    log.close()
+                    skip_a = choose_skip_line(name, curr_name, log_name)
+                    if log_name:
+                        log = open(log_name, 'a')
+                    else:
+                        log = open("log_file.log", 'a')
+
                     # go to the next adjusted file if skip_a is true
                     if skip_a:
-                        # print("Does not match " + currName)
-                        # print("Skipping adjusted file "  + name)
+                        # log.write("Does not match " + curr_name)
+                        # log.write("Skipping adjusted file "  + name)
                         break
                     # otherwise go to the next .creak file instead
                     else:
-                        # print("Does not match " + name)
-                        # print("Skipping .creak file." + currName)
-                        currFile = otherFile + next(dircycle)
-                        currName = re.sub(r'.*/(.*)', r'\1', currFile[:-6])
-                # else:
-                #     # print("Name " + name + " matches creakName " + currName)
+                        # log.write("Does not match " + name)
+                        # log.write("Skipping .creak file." + curr_name)
+                        curr_file = other_file + next(dircycle)
+                        curr_name = re.sub(r'.*/(.*)', r'\1', curr_file[:-6])
+                else:
+                    log.write("Name " + name + " matches creakName " + curr_name)
                 if skip_a:
                     # go to next iteration
                     continue
@@ -86,68 +104,64 @@ def format_files(partLength, adjusted, otherFile, outpath):
                 fileTitle = outpath + name + '.creak_aligned'
                 out = open(fileTitle, 'w')
 
-                with open(currFile, 'r') as c:
+                with open(curr_file, 'r') as c:
                     # skip first line
                     next(c)
-
+    
                     with open(f, 'r') as a:
                         try:
                             # get first two lines
                             next(a)
                             next(a)
                         except IOError:
-                            print('\n')
-                            print("File has fewer than two lines of content.\n")
-                            print("It is probably either the wrong type of file or was created incorrectly.\n")
-                            print('\n')
+                            log.write("File has fewer than two lines of content.\n")
+                            log.write("It is probably either the wrong type of file or was created incorrectly.\n")
                         # look at one line at a time
                         first = 1
                         for line in a:
                             try:
                                 # print "A line is " + line
                                 pieces = re.split(' |\t', line)
-                                currStart = pieces[0]
-                                currEnd = pieces[1]
-                                currSegment = pieces[2]
+                                curr_start = pieces[0]
+                                curr_end = pieces[1]
+                                curr_segment = pieces[2]
                             except IOError:
-                                print('\n')
-                                print("File cannot be split into three parts.\n")
-                                print("It is probably either the wrong type of file or was created incorrectly.\n")
-                                print('\n')
-
+                                log.write("File cannot be split into three parts.\n")
+                                log.write("It is probably either the wrong type of file or was created incorrectly.\n")
+    
                             if first:
                                 # get lines between start and end
                                 [time, creak] = next(c).split(',')
                                 # convert time to milliseconds
-                                milltime = 1000 * float(time)
+                                mill_time = 1000*float(time)
                                 first = 0
-
+    
                             # if the measurement time stamp is before a segment interval, skip it
-                            while milltime < float(currStart):
-                                # print("Creak line starts before adjusted, or is repeated.")
-                                # print(currStart)
-                                # print("milltime is " + str(milltime))
-                                # print("segment line is " + currStart + ", " + currEnd + ", " + currSegment + '\n')
-
+                            while mill_time < float(curr_start):
+                                log.write("Creak line starts before adjusted, or is repeated.")
+                                log.write(curr_start)
+                                log.write("mill_time is " + str(mill_time))
+                                log.write("segment line is " + curr_start + ", " + curr_end + ", " + curr_segment + '\n')
+    
                                 try:
                                     cline = next(c)
-                                    # print("new line is " + cline)
+                                    log.write("new line is " + cline)
                                 except:
-                                    # print("No more lines left in creak file.")
+                                    log.write("No more lines left in creak file.")
                                     break
 
                                 [time, creak] = cline.split(',')
                                 # convert time to milliseconds
-                                milltime = 1000 * float(time)
-
+                                mill_time = 1000*float(time)
+    
                             # gather all measurement lines that are within segment range
-                            while milltime >= float(currStart) and milltime <= float(currEnd):
-                                # print "file " + name
-                                # print(str(milltime) + " is between currStart: "
-                                # + currStart + " and currEnd: " + currEnd)
-                                lines.append([milltime, float(creak)])
+                            while float(curr_start) <= mill_time <= float(curr_end):
+                                # log.write("file " + name)
+                                # log.write(str(mill_time) + " is between curr_start: "
+                                # + curr_start + " and curr_end: " + curr_end)
+                                lines.append([mill_time, float(creak)])
                                 counter += 1
-
+    
                                 try:
                                     cline = next(c)
                                 except:
@@ -156,14 +170,13 @@ def format_files(partLength, adjusted, otherFile, outpath):
 
                                 [time, creak] = cline.split(',')
                                 # convert time to milliseconds
-                                milltime = 1000 * float(time)
-
+                                mill_time = 1000*float(time)
+    
                             # average creak value
-                            # print time range,
                             if counter != 0:
-                                creak_averages = IntervalCalculator.calculate_interval_values(float(currStart),
-                                                                                              float(currEnd), lines)
-                                out.write(currStart + '\t' + currEnd + '\t')
+                                creak_averages = IntervalCalculator.calculate_interval_values(float(curr_start),
+                                                                                              float(curr_end), lines)
+                                out.write(curr_start + '\t' + curr_end + '\t')
                                 # goes to 16 instead of 15 because the first value is the average
                                 for i in range(16):
                                     out.write(str(creak_averages[i]))
@@ -175,43 +188,36 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             # which would be if the segment interval is too small,
                             # just take the previous creak line -- it should be very close
                             else:
-                                # print("NO CREAK LINE BETWEEN INTERVAL, taking previous.")
-                                # print("=====================================")
-                                # print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(float(creak)))
-                                # print("=====================================")
-                                out.write(currStart + '\t' + currEnd + '\t')
-                                # goes to 16 instead of 15 because the first value is the average
-                                try:
-                                    for i in range(16):
-                                        out.write(str(creak_averages[i]))
-                                        if i < 15:
-                                            out.write('\t')
-                                    out.write('\n')
-                                except:
-                                    print("LINE 191")
-                                    raise
-
+                                log.write("NO CREAK LINE BETWEEN INTERVAL, taking previous.")
+                                log.write("=====================================")
+                                log.write("Writing Line: " + curr_start + '\t' + curr_end + '\t' + str(float(creak)))
+                                log.write("=====================================")
+                                out.write(curr_start + '\t' + curr_end + '\t' + str(float(creak)) + '\t')
+                                for i in range(15):
+                                    out.write(str(float(creak)))
+                                    if i < 14:
+                                        out.write('\t')
+                                out.write('\n')
+    
                             # clear variables
                             avgline = float(0)
                             lines = []
                             counter = 0
 
-                    sys.stdout.write('\r')
-                    sys.stdout.write("Formatted file " + name)
+                    log.write("Formatted file " + name)
                     out.close()
-        elif ".f0" in otherFiles[1]:
-            print("Files are .f0")
-            print('\n')
-            # print(otherFiles)
+        elif ".f0" in other_files[1]:
+            log.write("Files are .f0")
+            # print(other_files)
             # boolean that says whether to skip the rest of the adjusted file
             skip_a = False
             # get first
-            currFile = otherFile + next(dircycle)
-            currName = re.sub(r'.*/(.*)', r'\1', currFile[:-3])
-            # print("currName " + currName)
+            curr_file = other_file + next(dircycle)
+            curr_name = re.sub(r'.*/(.*)', r'\1', curr_file[:-3])
+            log.write("curr_name " + curr_name)
 
             # print(files)
-            for f in aFiles:
+            for f in a_files:
 
                 # remove adjusted extension
                 if "DS_Store" in f:
@@ -222,31 +228,39 @@ def format_files(partLength, adjusted, otherFile, outpath):
                     name = f[:-10]
                 else:
                     name = f[:-15]
-                # print("name is " + name)
-
+                log.write("name is " + name)
+                
                 f = adjusted + f
-                # # print "f is " + f
+                log.write("f is " + f)
 
                 # check that they have the same name
-                while name != currName:
-                    # print "==========================="
-                    # print "Filenames do not match up!"
-                    # print "name is " + name + " and currName is " + currName
-                    # print "==========================="
-                    skip_a = choose_skip_line(name, currName)
+                while name != curr_name:
+                    log.write("===========================")
+                    log.write("Filenames do not match up!")
+                    log.write("name is " + name + " and curr_name is " + curr_name)
+                    log.write("===========================")
+
+                    # close and reopen log file before and after function call
+                    log.close()
+                    skip_a = choose_skip_line(name, curr_name, log_name)
+                    if log_name:
+                        log = open(log_name, 'a')
+                    else:
+                        log = open("log_file.log", 'a')
+
                     # go to the next adjusted file if skip_a is true
                     if skip_a:
-                        # print("Skipping adjusted file " + name)
-                        # print("Does not match " + currName)
+                        log.write("Skipping adjusted file " + name)
+                        log.write("Does not match " + curr_name)
                         break
                     # otherwise go to the next .creak file instead
                     else:
-                        # print("Skipping .f0 file " + currName)
-                        # print("Does not match " + name)
-                        currFile = otherFile + next(dircycle)
-                        currName = re.sub(r'.*/(.*)', r'\1', currFile[:-3])
-                # else:
-                #     # print("Name " + name + " matches creakName " + currName)
+                        log.write("Skipping .f0 file " + curr_name)
+                        log.write("Does not match " + name)
+                        curr_file = other_file + next(dircycle)
+                        curr_name = re.sub(r'.*/(.*)', r'\1', curr_file[:-3])
+                else:
+                    log.write("Name " + name + " matches creakName " + curr_name)
                 if skip_a:
                     # go to next iteration
                     continue
@@ -255,7 +269,7 @@ def format_files(partLength, adjusted, otherFile, outpath):
                 fileTitle = outpath + name + '.f0_aligned'
                 out = open(fileTitle, 'w')
 
-                with open(currFile, 'r') as c:
+                with open(curr_file, 'r') as c:
                     # skip first 7 lines
                     next(c)
                     next(c)
@@ -264,114 +278,97 @@ def format_files(partLength, adjusted, otherFile, outpath):
                     next(c)
                     next(c)
                     next(c)
-
+    
                     with open(f, 'r') as a:
                         try:
                             # skip first two lines
                             next(a)
                             next(a)
                         except IOError:
-                            print('\n')
-                            print("File has fewer than two lines of content.\n")
-                            print("It is probably either the wrong type of file or was created incorrectly.\n")
-                            print('\n')
+                            log.write("File has fewer than two lines of content.\n")
+                            log.write("It is probably either the wrong type of file or was created incorrectly.\n")
                         # look at one line at a time
                         first = 1
                         for line in a:
                             try:
-                                # print "A line is " + line
-                                # print line
-                                # print "name is " + name
                                 pieces = re.split(' |\t', line)
-                                currStart = pieces[0]
-                                currEnd = pieces[1]
-                                currSegment = pieces[2]
-                                # print "currStart " + currStart
-                                # print "currEnd " + currEnd
-                                # print "currSegment " + currSegment
+                                curr_start = pieces[0]
+                                curr_end = pieces[1]
+                                curr_segment = pieces[2]
                             except IOError:
-                                print('\n')
                                 print("File cannot be split into three parts.\n")
                                 print("It is probably either the wrong type of file or was created incorrectly.\n")
-                                print('\n')
-
+    
                             if first:
                                 # get lines between start and end
                                 [time, pm, f0] = next(c).split(' ')
                                 # convert time to milliseconds
-                                milltime = 1000 * float(time)
+                                mill_time = 1000*float(time)
                                 first = 0
-
+                            
                             # if the measurement time stamp is before a segment interval, skip it
-                            while milltime < float(currStart):
-                                # print("f0 line starts before adjusted, or is repeated.")
-                                # print str(milltime) + " is less than " + str(currStart)
-                                # print "line is " + mLine[0] + ' at ' + mLine[4] + '\n'
-                                # print "segment line is " + currStart + ", " + currEnd + ", " + currSegment + '\n'
-
+                            while mill_time < float(curr_start):
+                                log.write("f0 line starts before adjusted, or is repeated.")
+                                log.write(str(mill_time) + " is less than " + str(curr_start))
+                                log.write("line is " + str([time, pm, f0]) + '\n')
+                                log.write("segment line is " + curr_start + ", " + curr_end + ", " + curr_segment + '\n')
+    
                                 try:
                                     cline = next(c)
                                     # print "next line" + cline
                                 except:
-                                    # print("No more lines left in f0 file.")
+                                    log.write("No more lines left in f0 file.")
                                     break
 
                                 [time, pm, f0] = cline.split(' ')
                                 # convert time to milliseconds
-                                milltime = 1000 * float(time)
-
+                                mill_time = 1000*float(time)
+    
                             # gather all measurement lines that are within segment range
-                            while milltime >= float(currStart) and milltime <= float(currEnd):
-                                # print "file " + name
-                                # print "pm " + pm + " and f0 " + f0
-                                # print str(milltime) + " is between currStart: " + currStart + " and currEnd: " + currEnd
-                                lines.append([milltime, float(f0), float(pm)])
+                            while mill_time >= float(curr_start) and mill_time <= float(curr_end):
+                                lines.append([mill_time, float(f0), float(pm)])
                                 counter += 1
-
+    
                                 try:
                                     cline = next(c)
                                     # print "next line " + cline
                                 except:
-                                    # print("No more lines left in f0 file.")
+                                    log.write("No more lines left in f0 file.")
                                     break
 
                                 [time, pm, f0] = cline.split(' ')
                                 # convert time to milliseconds
-                                milltime = 1000 * float(time)
-                                # print milltime
-
+                                mill_time = 1000*float(time)
+    
                             # average f0 value
                             if counter != 0:
-                                f0_averages = IntervalCalculator.calculate_f0_interval_values(float(currStart),
-                                                                                              float(currEnd), lines)
-                                out.write(currStart + '\t' + currEnd + '\t')
+                                f0_averages = IntervalCalculator.calculate_f0_interval_values(float(curr_start), float(curr_end), lines)
+                                out.write(curr_start + '\t' + curr_end + '\t')
                                 # goes to 32 bc of f0 and pm averages plus intervals
                                 for i in range(32):
                                     try:
                                         out.write(str(f0_averages[i]))
                                     except:
-                                        print('\n')
-                                        print("Not enough values in creak list!")
-                                        print('\n')
+                                        log.write("Not enough values in creak list!")
                                     if i < 32:
                                         out.write('\t')
                                 out.write('\n')
-
+    
                             else:
-                                print("NO f0 LINE BETWEEN INTERVAL, taking previous.")
-                                print("=====================================")
-                                print("Writing Line: " + currStart + '\t' + currEnd + '\t' + str(float(f0)) + '\t' + str(float(pm)))
-                                print("=====================================")
-                                out.write(currStart + '\t' + currEnd + '\t')
-                                # goes to 32 bc of f0 and pm averages plus intervals
-                                for i in range(32):
-                                    try:
-                                        out.write(str(f0_averages[i]))
-                                    except:
-                                        print('\n')
-                                        print("Not enough values in creak list!")
-                                        print('\n')
-                                    if i < 32:
+                                log.write("NO f0 LINE BETWEEN INTERVAL, taking previous.")
+                                log.write("=====================================")
+                                log.write("Writing Line: " + curr_start + '\t' + curr_end + '\t' + str(float(f0)) + '\t'
+                                          + str(float(pm)))
+                                log.write("=====================================")
+                                out.write(curr_start + '\t' + curr_end + '\t' + str(avgf0) + '\t')
+                                for i in range(15):
+                                    out.write(str(avgf0))
+                                    if i < 14:
+                                        out.write('\t')
+                                out.write(str(avgpm) + '\t')
+                                for i in range(15):
+                                    out.write(str(avgpm))
+                                    if i < 14:
                                         out.write('\t')
                                 out.write('\n')
 
@@ -381,25 +378,33 @@ def format_files(partLength, adjusted, otherFile, outpath):
                             avgf0 = 0
                             counter = 0
 
-                    sys.stdout.write('\r')
-                    sys.stdout.write("Formatted file " + name)
+                    log.write("Formatted file " + name)
                     out.close()
         else:
-            print(otherFiles[1])
             print("Directory contains the wrong type of files! (need .creak, .f0 or .pm)")
+            log.write("Directory contains the wrong type of files! (need .creak, .f0 or .pm)")
+    else:
+        print("Please input directory.")
+        log.write("Please input directory.")
+    log.close()
 
 
 # for choosing which file to skip among files from the Children's corpus
 # returning trur means the adjusted file should be skipped,
 # false means the other file should be skipped
 # sample c_f_svo_a10_s2_p01_t035_svo_r1.measures_aligned
-def choose_skip_lineCC(adjName, mName):
+def choose_skip_lineCC(adjName, mName, log_name):
+    if log_name:
+        log = open(log_name, 'a')
+    else:
+        log = open("log_file.log", 'a')
     try:
         adjValues = re.sub(r'.*_a([\d\w]{1,2})_s(\d)_p(\d+)_t(\d+)_.*', r'\1 \2 \3 \4', adjName)
         [adjage, adjsample, adjperson, adjnum] = adjValues.split(' ')
         if 'a' in adjage:
             adjage = 20
     except:
+        log.close()
         return True
 
     try:
@@ -408,6 +413,7 @@ def choose_skip_lineCC(adjName, mName):
         if 'a' in mage:
             mage = 20
     except:
+        log.close()
         return False
 
     # see if they are the same age
@@ -418,30 +424,44 @@ def choose_skip_lineCC(adjName, mName):
             if int(adjperson) == int(mperson):
                 # see if they are they same file number
                 if int(adjnum) == int(mnum):
-                    print("adjusted file: " + adjName + ", other file: " + mName)
+                    log.write("adjusted file: " + adjName + ", other file: " + mName)
+                    log.write("ValeError: Can't tell which file to skip!")
                     raise ValueError("Can't tell which file to skip!")
-                    print('\n')
                 elif int(adjnum) < int(mnum):
+                    log.close()
                     return True
                 else:
+                    log.close()
                     return False
             elif int(adjperson) < int(mperson):
+                log.close()
                 return True
             else:
+                log.close()
                 return False
         elif int(adjsample) < int(msample):
+            log.close()
             return True
         else:
+            log.close()
             return False
     elif int(adjage) < int(mage):
+        log.close()
         return True
     else:
+        log.close()
         return False
+    log.close()
 
 
 # determine whether a line in adjusted or in measures should be skipped
 # do this by getting gradient numbers and skipping the one that is more behind
-def choose_skip_line(adjName, mName):
+def choose_skip_line(adjName, mName, log_name):
+    if log_name:
+        log = open(log_name, 'a')
+    else:
+        log = open("log_file.log", 'a')
+
     try:
         adjValues = re.sub(r'.*_\d{2}_(\w{1,2})(\d{2,4})(\w+?)(\d{3,4}).*', r'\1 \2 \3 \4', adjName)
         [adjgender, adjspeakId, adjfiletype, adjnum] = adjValues.split(' ')
@@ -454,7 +474,8 @@ def choose_skip_line(adjName, mName):
             adjTypeNo = 2
     except:
         # if it doesn't fit the regex, skip it
-        print("Failed COSPRO comparison: " + adjName)
+        log.write("Failed COSPRO comparison: " + adjName)
+        log.close()
         return choose_skip_lineCC(adjName, mName)
     try:
         mValues = re.sub(r'.*_\d{2}_(\w{1,2})(\d{2,4})(\w+?)(\d{3,4}).*', r'\1 \2 \3 \4', mName)
@@ -468,7 +489,8 @@ def choose_skip_line(adjName, mName):
             mTypeNo = 2
     except:
         # if it doesn't fit the regex, skip it
-        print("Failed COSPRO comparison: " + mName)
+        log.write("Failed COSPRO comparison: " + mName)
+        log.close()
         return False
     # print(adjspeakId + ',' + adjfiletype + ',' + adjnum)
     # print(mspeakId + ',' + mfiletype + ',' + mnum)
@@ -485,65 +507,69 @@ def choose_skip_line(adjName, mName):
                 # see if they are they same file number
                 if int(adjnum) == int(mnum):
                     if adjTypeNo == mTypeNo:
-                        print('Segment file: ' + adjName + ', other file: ' + mName)
+                        log.close()
                         raise ValueError("I don't know which file to skip!")
                     elif adjTypeNo < mTypeNo:
+                        log.close()
                         return True
                     else:
+                        log.close()
                         return False
                 # see if adj is prev file number
                 elif int(adjnum) < int(mnum):
                     # skip adj file
-                    print('\n')
-                    print(adjspeakId + ',' + adjfiletype + ',' + adjnum + ' (a) is before ' + mspeakId + ',' + mfiletype + ',' + mnum)
-                    print('\n')
+                    # print(adjspeakId + ',' + adjfiletype + ',' + adjnum + ' (a) is before ' + mspeakId + ',' + mfiletype + ',' + mnum)
+                    log.close()
                     return True
                 # see if mLine is a prev file number
                 else:
                     # skip mLine
                     # print(mspeakId + ',' + mfiletype + ',' + mnum + ' (m) is before ' + adjspeakId + ',' + adjfiletype + ',' + adjnum)
+                    log.close()
                     return False
             # skip whichever one is word or prg (this needs to be done in cospro02 sometimes)
             # CHANGED: w < phr < prg
             elif 'w' in adjfiletype:
                 # skip adj file
-                print('\n')
-                print(adjspeakId + ',' + adjfiletype + ',' + adjnum + ' (a) is before ' + mspeakId + ',' + mfiletype + ',' + mnum)
-                print('\n')
+                # print(adjspeakId + ',' + adjfiletype + ',' + adjnum + ' (a) is before ' + mspeakId + ',' + mfiletype + ',' + mnum)
+                log.close()
                 return True
-            # see if mLine is a prev speaker
+            # see if mLine is a prev speaker 
             elif 'w' in mfiletype:
                 # skip mLine
                 # print(mspeakId + ',' + mfiletype + ',' + mnum + ' (m) is before ' + adjspeakId + ',' + adjfiletype + ',' + adjnum)
+                log.close()
                 return False
             elif 'prg' in adjfiletype:
+                log.close()
                 return False
             else:
-                print('Segment file: ' + adjName + ', other file: ' + mName)
+                log.close()
+                log.write("ValueError: I don't know which file to skip!")
                 raise ValueError("I dont know which file to skip!")
-        # see if adj is a prev speaker
+        #see if adj is a prev speaker
         elif int(adjspeakId) < int(mspeakId):
             # skip adj file
-            print('\n')
             print(adjspeakId + ',' + adjfiletype + ',' + adjnum + ' (a) is before ' + mspeakId + ',' + mfiletype + ',' + mnum)
-            print('\n')
+            log.close()
             return True
-        # see if mLine is a prev speaker
+        # see if mLine is a prev speaker 
         else:
             # skip mLine
             # print(mspeakId + ',' + mfiletype + ',' + mnum + ' (m) is before ' + adjspeakId + ',' + adjfiletype + ',' + adjnum)
+            log.close()
             return False
     # if adj is F, skip it (because F comes first)
     elif 'F' in adjgender:
         # skip adj file
-        print('\n')
         print(adjspeakId + ',' + adjfiletype + ',' + adjnum + ' (a) is before ' + mspeakId + ',' + mfiletype + ',' + mnum)
-        print('\n')
+        log.close()
         return True
-    # otherwise adj is probably 'M' and m is 'F'
+    # otherwise adj is probably 'M' and m is 'F' 
     else:
         # skip mLine
         # print(mspeakId + ',' + mfiletype + ',' + mnum + ' (m) is before ' + adjspeakId + ',' + adjfiletype + ',' + adjnum)
+        log.close()
         return False
 
 
@@ -677,7 +703,6 @@ class IntervalCalculator:
         # print(output)
         return output
 
-
 if __name__ == '__main__':
     # sample command python ~/Desktop/Phonetics_Lab_Work/Task_2_Scripts/convert_to_15_intervals.py creak COSPRO_01/ 10
     refdirectory = dirname('/Users/John/Documents/Phonetics_Lab_Summer_2017/'
@@ -691,7 +716,11 @@ if __name__ == '__main__':
         print(segAddress)
         creakAddress = refdirectory + '/1-Raw_Creaks/' + sys.argv[2]
         outAddress = refdirectory + '/2-Formatted_Creak/' + sys.argv[2]
-        format_files(sys.argv[3], segAddress, creakAddress, outAddress)
+        if len(sys.argv >= 5):
+            # log file name found
+            format_files(sys.argv[3], segAddress, creakAddress, outAddress, sys.argv[4])
+        else:
+            format_files(sys.argv[3], segAddress, creakAddress, outAddress, '')
     elif sys.argv[1] == 'reaper':
         if not 'COSPRO_0' in sys.argv[2]:
             if not 'Child' in sys.argv[2]:
@@ -701,6 +730,10 @@ if __name__ == '__main__':
         print(segAddress)
         reapAddress = refdirectory + '/1-Raw_Reaper_Results/' + sys.argv[2]
         outAddress = refdirectory + '/2-Formatted_Reaper_Results/' + sys.argv[2]
-        format_files(sys.argv[3], segAddress, reapAddress, outAddress)
+        if len(sys.argv) >= 5:
+            # log file name found
+            format_files(sys.argv[3], segAddress, reapAddress, outAddress, sys.argv[4])
+        else:
+            format_files(sys.argv[3], segAddress, reapAddress, outAddress, 'log_file.log')
     else:
-        format_files(sys.argv[4], sys.argv[1], sys.argv[2], sys.argv[3])
+        print("OLD ARG PATTERN DETECTED, PLEASE USE NEW ARG PATTERN")

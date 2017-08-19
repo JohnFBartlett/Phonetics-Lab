@@ -1,0 +1,109 @@
+#!/usr/bin/python
+
+import sys
+import re
+
+
+# from re import sub
+
+
+def combine_creak_segment(segment, creak):
+    # initialize txtGrid file
+    # remove creak_aligned extension
+    name = re.sub(r'.*/(.*).TextGrid', r'\1', creak)
+    file_title = 'combined_TextGrids/' + name + '_creak_seg.TextGrid'
+    tg = open(file_title, 'w')
+    tg.write('File type = "ooTextFile"\n')
+    tg.write('Object class = "TextGrid"\n\n')
+    tg.write('xmin = 0\n')
+
+    c = open(creak, 'r')
+    s = open(segment, 'r')
+
+    # get max time of each and combine them
+    c_line = next(c)
+    while 'xmax' not in c_line:
+        try:
+            c_line = next(c)
+        except StopIteration:
+            sys.stdout.write('\r')
+            sys.stdout.write('Ran out of lines in ' + creak + '\n')
+            sys.stdout.write('Last line ' + c_line + '\n')
+            raise
+    # print(c_line)
+    c_time = float(re.split(' |\t|\n', c_line)[2])
+
+    # get segment time
+    s_line = next(s)
+    while 'xmax' not in s_line:
+        try:
+            s_line = next(s)
+        except StopIteration:
+            sys.stdout.write('\r')
+            sys.stdout.write('Ran out of lines in ' + segment + '\n')
+            sys.stdout.write('Last line ' + s_line + '\n')
+            raise
+    s_time = float(re.split(' |\t|\n', s_line)[2])
+
+    time = max(c_time, s_time)
+    tg.write('xmax = ' + str(time) + '\n')
+    tg.write('tiers? <exists>\n')
+    tg.write('size = 3\n')
+    tg.write('item []:\n')
+
+    # add segment tier
+    while 'item [1]' not in s_line:
+        try:
+            s_line = next(s)
+        except StopIteration:
+            sys.stdout.write('\r')
+            sys.stdout.write('Ran out of lines in ' + segment + '\n')
+            sys.stdout.write('Last line ' + s_line + '\n')
+            raise
+    while s_line:
+        tg.write(s_line)
+        # print("writing seg line " + s_line)
+        try:
+            s_line = next(s)
+        except StopIteration:
+            sys.stdout.write('Added segment tier... ')
+            break
+
+    # add creak tier
+    while 'item [1]' not in c_line:
+        # print("Checking c")
+        try:
+            c_line = next(c)
+        except StopIteration:
+            sys.stdout.write('\r')
+            sys.stdout.write('Ran out of lines in ' + creak + '\n')
+            sys.stdout.write('Last line ' + c_line + '\n')
+            raise
+    tg.write('    item [2]:\n')
+    try:
+        c_line = next(c)
+    except StopIteration:
+        sys.stdout.write('Creak formatted incorrectly!')
+        raise
+    while c_line:
+        tg.write(c_line)
+        try:
+            c_line = next(c)
+        except StopIteration:
+            sys.stdout.write('Added creak tier!')
+            break
+
+    # add quality point tier
+    tg.write('    item [3]:\n')
+    tg.write('        class = "TextTier"\n')
+    tg.write('        name = "Quality_Check"\n')
+    tg.write('        xmin = 0\n')
+    tg.write('        xmax = ' + str(time) + '\n')
+    tg.write('        points: size = 0\n')
+
+    c.close()
+    s.close()
+    tg.close()
+
+
+combine_creak_segment(sys.argv[1], sys.argv[2])

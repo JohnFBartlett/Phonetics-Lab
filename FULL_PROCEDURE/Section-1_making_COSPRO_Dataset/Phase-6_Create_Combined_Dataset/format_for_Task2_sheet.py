@@ -3,12 +3,22 @@
 import sys
 import re
 import os
+from os.path import isfile
 
-def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
-    # Check if from Childrens Data
+
+def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out, log_name):
+    if isfile(log_name):
+        log = open(log_name, 'a')
+    else:
+        log = open(log_name, 'w')
+
+    log.write("--------------------")
+
+    # Check if from Children's Data
     childrens = False
     if 'Child' in out:
         childrens = True
+        log.write("From Children's corpus\n")
 
     pieces = adjusted.split('/')
     name = pieces[-1]
@@ -17,6 +27,10 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         name = name[:-10]
     else:
         name = name[:-15]
+
+    sys.stdout.write('\r')
+    sys.stdout.write("Executing file " + name)
+    log.write("Executing file " + name + '\n')
 
     # .t2 is the extension of files formatted for task 2
     fileTitle = out + name + '.t2.txt'
@@ -81,6 +95,8 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
             r = open(rrel, 'r')
         if measurements == 'N/A':
             print("Couldn't find measurements")
+            log.write("Couldn't find measurements")
+            print(' ')
             m = 0
         else:
             m = open(mrel, 'r')
@@ -118,16 +134,19 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
             # print "Break line " + str(bcount)
          
         # 2. Try to skip first two line of .adjusted, read next two lines (if possible) and store them as 
-        # [prevStart, prevEnd, prevSegment] and [currStart, currEnd, currSegment]
+        # [prevStart, prevEnd, prevSegment] and [currStart, currEnd, curr_segment]
         try:
             next(a)
             next(a)
-            [currStart, currEnd, currSegment] = re.split(' |\t', next(a))
+            [currStart, currEnd, curr_segment] = re.split(' |\t', next(a))
             scount += 1
             # print "Segment line " + str(scount)
         except IOError:
             print("File has fewer than two lines of content (besides header lines).\n")
             print("It is probably either the wrong type of file or was created incorrectly.\n")
+            print(' ')
+            log.write("File has fewer than two lines of content (besides header lines).\n")
+            log.write("It is probably either the wrong type of file or was created incorrectly.\n")
         
         # variable first marks first iteration
         first = 1
@@ -142,61 +161,81 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
 
         # for each line, do:
         for line in a:
+            num_cols = 0
             scount += 1
             # print "Segment line " + str(scount)
-            #read next .adjusted line as [nextStart, nextEnd, nextSegment]
+            #read next .adjusted line as [nextStart, nextEnd, next_segment]
             try:
                 # print "A line is " + line
                 pieces = re.split(' |\t', line)
                 if len(pieces) > 2:
                     nextStart = pieces[0]
                     nextEnd = pieces[1]
-                    nextSegment = pieces[2]
+                    next_segment = pieces[2]
             except ValueError:
                 print(line)
-                raise ValueError("Line 130, line can't be split correctly")
+                raise ValueError("Line 130, line can't be split correctly\n")
         
             # 1. write filename and sentence number
             # clear newline character
             name = re.sub(r'(.*)\n', r'\1', name)
             out.write(name + '\t')
+            log.write("Name: " + name + '\n')
+            num_cols += 1
 
-            senNum = re.sub(r'.*(\d+)$', r'\1', name)
-            out.write(senNum + '\t')
+            sen_num = re.sub(r'.*[MF]\d+.*?(\d+).*', r'\1', name)
+            # print(str(sen_num) + ' from ' + name)
+            # print(' ')
+            out.write(sen_num + '\t')
+            if sen_num == name:
+                log.write("Sen_num: Not found!\n")
+            else:
+                log.write("Sen_num: " + sen_num + '\n')
+            num_cols += 1
                             
-            # 2. write currSegment, vowel and times
+            # 2. write curr_segment, vowel and times
             # clear newline character
-            currSegment = re.sub(r'(.*)\n', r'\1', currSegment)
-            out.write(currSegment + '\t')
+            curr_segment = re.sub(r'(.*)\n', r'\1', curr_segment)
+            out.write(curr_segment + '\t')
+            log.write(curr_segment + '\n')
+            num_cols += 1
 
-            # get tone from currSegment, if possible
-            tone = re.sub(r'.*(\d+).*', r'\1', currSegment)
-            if currSegment == tone:
+            # get tone from curr_segment, if possible
+            tone = re.sub(r'.*(\d+).*', r'\1', curr_segment)
+            if curr_segment == tone:
                 # no tone found
                 out.write('N/A' + '\t')
+                log.write('Tone: N/A\n')
+                num_cols += 1
             else:
                 out.write(tone + '\t')
+                log.write(tone + '\n')
+                num_cols += 1
 
-            # get tone from nextSegment, if possible
-            nextSegment = re.sub(r'(.*)\n', r'\1', nextSegment)
-            tone = re.sub(r'.*(\d+).*', r'\1', nextSegment)
-            if nextSegment == tone:
+            # get tone from next_segment, if possible
+            next_segment = re.sub(r'(.*)\n', r'\1', next_segment)
+            tone = re.sub(r'.*(\d+).*', r'\1', next_segment)
+            if next_segment == tone:
                 # no tone found
                 out.write('N/A' + '\t')
+                log.write('Tone: N/A\n')
+                num_cols += 1
             else:
                 out.write(tone + '\t')
+                log.write(tone + '\n')
+                num_cols += 1
         
             # detect vowels (Full list of vowels in SAMPA-T label method on p. 11
             # of Taiwan Mandarin Running Speech databases.pdf in documentation.)
             vowel = 'C'
-            for letter in currSegment:
+            for letter in curr_segment:
                 if letter in 'iuyaEo?@U~}':
                     vowel = 'V'
-            if 'n^' in currSegment:
+            if 'n^' in curr_segment:
                 vowel = 'V'
-            elif 'm^' in currSegment:
+            elif 'm^' in curr_segment:
                 vowel = 'V'
-            elif 'sil' in currSegment:
+            elif 'sil' in curr_segment:
                 vowel = 'N/A'
         
             out.write(vowel + '\t' + currStart + '\t' + currEnd + '\t')
@@ -218,6 +257,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                     # print "bEnd is " + bEnd + "and prevStart is " + prevStart
                     while float(bEnd) <= float(prevStart):
                         print("next 1")
+                        print(' ')
                         # store previous break lines if needed
                         [backlog2_S, backlog2_E, backlog2_I] = [backlog1_S, backlog1_E, backlog1_I]
                         [backlog1_S, backlog1_E, backlog1_I] = [bStart, bEnd, bItem]
@@ -231,6 +271,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                             print("PREVVVVVV")
                             print(bStart)
                             print("Break line a " + str(bcount))
+                            print(' ')
                         except StopIteration:
                             # print "out"
                             out.write('no more prev beg break data' + '\t')
@@ -254,6 +295,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                     # break file. In this case I will just print the current break anyway.
                     elif backlog1_S == "":
                         print("SPECIAL CASE: break file does not start at 0.")
+                        print(' ')
                         bItem = re.sub(r'(.*)\n', r'\1', bItem)
                         out.write(bItem + '\t')
 
@@ -322,6 +364,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 # break file. In this case I will just print the current break anyway.
                 elif backlog1_S == "":
                     print("SPECIAL CASE: break file does not start at 0.")
+                    print(' ')
                     bItem = re.sub(r'(.*)\n', r'\1', bItem)
                     out.write(bItem + '\t')
 
@@ -343,6 +386,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 elif not written:
                     out.write('No item within range' + '\t')
                     print("currStart " + currStart + " not within " + bStart + " and " + bEnd)
+                    print(' ')
                     # print "ba0: " + bStart + ", " + bEnd
                     # print "ba1: " + backlog1_S + ", " + backlog1_E
                     # print "ba2: " + backlog2_S + ", " + backlog2_E
@@ -371,7 +415,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                         # print "Break line b " + str(bcount)
                     except ValueError:
                         print(str(pieces))
-                        raise ValueError("Line 332, line can't be split correctly")
+                        raise ValueError("Line 332, line can't be split correctly\n")
                     except StopIteration:
                         out.write('no more curr end break data' + '\t')
                         written = 1
@@ -401,10 +445,10 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 prevSegment = re.sub(r'(.*)\n', r'\1', prevSegment)
                 out.write(prevSegment + '\t')
                                 
-            # 8. write nextSegment
+            # 8. write next_segment
             # clear newline character
-            nextSegment = re.sub(r'(.*)\n', r'\1', nextSegment)
-            out.write(nextSegment + '\t')
+            next_segment = re.sub(r'(.*)\n', r'\1', next_segment)
+            out.write(next_segment + '\t')
         
             # 9. write creak datum
             written = 0
@@ -420,6 +464,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                         out.write(elem + '\t')
                 except StopIteration:
                     print("No more c lines")
+                    print(' ')
                     out.write('no more creak data' + '\t')
                     written = 1
             else:
@@ -430,16 +475,23 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
             written = 0
             if r:
                 try:
-                    reaperdata = next(r).split('\t')
-                    reaperValues = reaperdata[2:]
+                    reaperdata = next(r).rstrip()
+                    reaperValues = reaperdata.split('\t')
+                    reaperValues = reaperValues[2:]
                     rcount += 1
+                    # print("Before: " + str(reaperValues))
                     # print "Reaper line " + str(rcount)
                     # clear newline characters
-                    reaperValues[-1] = re.sub(r'(.*)\n', r'\1', reaperValues[-1])
+                    # reaperValues[-1] = re.sub(r'(.*)\n', r'\1', reaperValues[-1])
+                    # reaperValues = reaperValues[-1]
+                    # print("After: " + str(reaperValues))
+
                     for elem in reaperValues:
+                        # print("Writing elem: " + elem + ' and tab: ' + '\t')
                         out.write(elem + '\t')
                 except StopIteration:
                     print("No more reaper lines")
+                    print(' ')
                     out.write('no more reaper data' + '\t')
                     written = 1
             else:
@@ -460,6 +512,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 except StopIteration:
                     print("measurement file finished")
                     print("currStart " + currStart + " and currEnd " + currEnd)
+                    print(' ')
                     out.write('no more measure data' + '\n')
                     written = 1
             else:
@@ -467,10 +520,10 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
                 written = 1
 
             # 12. update time interval
-            # set [currStart, currEnd, currSegment] = [nextStart, nextEnd, nextSegment]
-            # set [prevStart, prevEnd, prevSegment] = [currStart, currEnd, currSegment]
-            [prevStart, prevEnd, prevSegment] = [currStart, currEnd, currSegment]
-            [currStart, currEnd, currSegment] = [nextStart, nextEnd, nextSegment]
+            # set [currStart, currEnd, curr_segment] = [nextStart, nextEnd, next_segment]
+            # set [prevStart, prevEnd, prevSegment] = [currStart, currEnd, curr_segment]
+            [prevStart, prevEnd, prevSegment] = [currStart, currEnd, curr_segment]
+            [currStart, currEnd, curr_segment] = [nextStart, nextEnd, next_segment]
 
             # print "END ITER"
 
@@ -482,17 +535,17 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         name = re.sub(r'(.*)\n', r'\1', name)
         out.write(name + '\t')
 
-        senNum = re.sub(r'.*(\d+)$', r'\1', name)
-        out.write(senNum + '\t')
+        sen_num = re.sub(r'.*[MF]\d+.*?(\d+).*', r'\1', name)
+        out.write(sen_num + '\t')
         
-        # 2. get currSegment, vowel, times
+        # 2. get curr_segment, vowel, times
         # clear newline character
-        currSegment = re.sub(r'(.*)\n', r'\1', currSegment)
-        out.write(currSegment + '\t')
+        curr_segment = re.sub(r'(.*)\n', r'\1', curr_segment)
+        out.write(curr_segment + '\t')
 
-        # get tone from currSegment, if possible
-        tone = re.sub(r'.*(\d+).*', r'\1', currSegment)
-        if currSegment == tone:
+        # get tone from curr_segment, if possible
+        tone = re.sub(r'.*(\d+).*', r'\1', curr_segment)
+        if curr_segment == tone:
             # no tone found
             out.write('N/A' + '\t')
         else:
@@ -504,17 +557,17 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         # detect vowels (Full list of vowels in SAMPA-T label method on p. 11
         # of Taiwan Mandarin Running Speech databases.pdf in documentation.)
         vowel = 'C'
-        for letter in currSegment:
+        for letter in curr_segment:
             if letter in 'iuyaEo?@U~}':
                 vowel = 'V'
-        if 'n^' in currSegment:
+        if 'n^' in curr_segment:
             vowel = 'V'
-        elif 'm^' in currSegment:
+        elif 'm^' in curr_segment:
             vowel = 'V'
-        elif 'sil' in currSegment:
+        elif 'sil' in curr_segment:
             vowel = 'N/A'
         
-        # write currSegment, vowel, times
+        # write curr_segment, vowel, times
         out.write(vowel + '\t' + currStart + '\t' + currEnd + '\t')
                         
         # 3. print Speaker ID and speech style (acquired at beginning)
@@ -526,6 +579,7 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         # 4. print break at beginning of previous segment (N/A) if none
         if first:
                 print("first iteration")
+                print(' ')
                 out.write('N/A' + '\t')
         else:
             written = 0
@@ -684,12 +738,13 @@ def format_files(adjusted, breakfile, creakfile, reaperfile, measurements, out):
         # 10. write reaper .f0 and .pm
         if r:
             try:
-                reaperdata = next(r).split('\t')
-                reaperValues = reaperdata[2:]
+                reaperdata = next(r).rstrip()
+                reaperValues = reaperdata.split('\t')
+                reaperValues = reaperValues[2:]
                 rcount += 1
                 # print "Reaper line " + str(rcount)
                 # clear newline characters
-                reaperValues[-1] = re.sub(r'(.*)\n', r'\1', reaperValues[-1])
+                # reaperValues[-1] = re.sub(r'(.*)\n', r'\1', reaperValues[-1])
                 for elem in reaperValues:
                     out.write(elem + '\t')
             except StopIteration:
@@ -766,5 +821,5 @@ def get_speech_style(rest):
         print("Couldn't match style!")
         return "Not found"
 
-# there will always be 6 arguments because apply_task2_formatting.py is the pipeline
-format_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
+# there will always be 7 arguments because apply_task2_formatting.py is the pipeline
+format_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7])

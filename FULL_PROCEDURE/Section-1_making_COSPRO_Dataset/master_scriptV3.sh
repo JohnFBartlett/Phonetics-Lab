@@ -83,8 +83,6 @@ then
     fi
 fi
 
-cd ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/COSPRO_DATA_BIN/data_analysis
-
 if [ "$PART" -lt 3 ]
 then
     echo -n "VoiceSauce, Creak and Reaper Analysis. Begin?(y/n) "
@@ -134,13 +132,7 @@ then
             cp ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-2_Creak_Analysis/VoiceSauce_Analysis_Toolkit-master .
         fi
         plab -b Section-1_making_COSPRO_Dataset/Phase-2_Creak_Analysis/apply_creak_detection.sh .
-        find ./Output/ -name *creak -exec mv {} 1-Raw_Creak/$1
-    fi
-
-    echo -n "Continue?(y/n)"
-    read yn
-    if [[ "$yn" =~ ^(n|N|no|No) ]]; then
-        quit 0
+        find ./Output/ -name *creak -exec mv {} ../../1-Raw_Creak/$1
     fi
 
     # Ask about Phase 3: Reaper Analysis
@@ -149,19 +141,16 @@ then
     read yn
     if [[ "$yn" =~ ^(n|N|no|No) ]]; then
         plab -b Section-1_making_COSPRO_Dataset/Phase-3_Reaper_Analysis/apply_reaper .
-        find ./Output/ -name *creak -exec mv {} 1-Raw_Reaper/$1
+        find ./Output/ -name *creak -exec mv {} ../../1-Raw_Reaper/$1
     fi
 
-    echo -n "Continue?(y/n)"
-    read yn
-    if [[ "$yn" =~ ^(n|N|no|No) ]]; then
-        quit 0
-    fi
+    echo "Completed Analysis section."
 fi
 
 
 if [ "$PART" -lt 4 ]
 then
+    echo
     echo -n "Phase 5: File Alignment. Begin?(y/n) "
     read yn
     if [[ "$yn" =~ ^(n|N|no|No) ]]; then
@@ -170,53 +159,56 @@ then
     echo
     echo "Checking for adjusted files..."
     # Check reaper
-    if [[ -n "$(ls 2-Formatted_Segments/$1)" ]]; then
+    if [[ -n "$(ls ../../2-Formatted_Segments/$1)" ]]; then
         echo "Found adjusted/phn files"
     else
-        echo "No files found in 2-Formatted_Segments! Cannot format other files without .adjusted or .phn files"
+        echo "No files found in ../../2-Formatted_Adjusted! Cannot format other files without .adjusted or .phn files"
         pwd
     fi
 
     # Check reaper
-    echo
     echo -n "Have reaper files been formatted?(y/n) "
     read yn
     if [[ "$yn" =~ ^(n|N|no|No) ]]; then
         echo "Checking for reaper files..."
-        if [[ -n "$(ls 1-Raw_Reaper_Results/$1)" ]]; then
+        if [[ -n "$(ls ../../1-Raw_Reaper_Results/$1)" ]]; then
             echo "Found files in Raw Reaper folder"
-            python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py reaper $1 10
+            CURRTIME=date +"%Y-%m-%d_%T"
+            LOGNAME="reaper_formatting_$CURRTIME.log"
+            python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py reaper $1 10 $LOGNAME
         else
-            echo "No files found in 1-Raw_Reaper_Results!"
+            echo "No files found in ../../1-Raw_Reaper_Results!"
             pwd
         fi
     fi
 
     # Check creak
-    echo
     echo -n "Have creak files been formatted?(y/n) "
     read yn
     if [[ "$yn" =~ ^(n|N|no|No) ]]; then
         echo "Checking for creak files..."
-        if [[ -n "$(ls 1-Raw_Creaks/$1)" ]]; then
+        if [[ -n "$(ls ../../1-Raw_Creaks/$1)" ]]; then
             echo "Found files in Raw Creak folder"
-            python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py creak $1 10
+            CURRTIME=date +"%Y-%m-%d_%T"
+            LOGNAME="creak_formatting_$CURRTIME.log"
+            python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/convert_to_15_intervalsV2.py creak $1 10 $LOGNAME
         else
-            echo "No files found in 1-Raw_Creaks!"
+            echo "No files found in ../../1-Raw_Creaks!"
             pwd
         fi
     fi
 
     # Check Measures
-    echo
-    echo -n "Have VoiceSauce files been split into segments?(y/n) "
+    echo -n "Have VoiceSauce files been split into segments?(y/n)"
     read yn
     if [[ "$yn" =~ ^(n|N|no|No) ]]; then
-        if [[ -n "$(ls 1-Raw_Measures/$1)" ]]; then
+        if [[ -n "$(ls ../../1-Raw_Measures/$1)" ]]; then
             echo "Found files in Raw Measures folder"
-            for file in $(find 1-Raw_Measures/$1 -name *output*txt); do
+            for file in $(find ../../1-Raw_Measures/$1 -name *combined*txt); do
                 echo "Opening file $file"
-                python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py $file 2-Formatted_Measures/$1
+                CURRTIME=date +"%Y-%m-%d_%T"
+                LOGNAME="../../logs/measures_formatting_$CURRTIME"
+                python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-5_Align_Files/split_measures.py ../../1-Raw_Measures/$1$file ../../2-Formatted_Measures/$1 $LOGNAME
             done
 
         else
@@ -240,11 +232,13 @@ echo -n "Format files?(y/n) "
 read yn
 if [[ "$yn" =~ ^(y|Y|yes|Yes) ]]; then
     # Run task2_formatting
-    bash ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh $1 format_6.log
+    CURRTIME=date +"%Y-%m-%d_%T"
+    LOGNAME="../../logs/creating_dataset_$CURRTIME"
+    bash ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/apply_task2_formatting.sh $1 $LOGNAME
 
 fi
 
-cd 3-Combined/$1
+cd ../../3-Combined/$1
 pwd
 echo -n "Combine files?(y/n) "
 read yn
@@ -254,11 +248,21 @@ fi
 echo "Now combining files"
 # Go into parts and combine tables
 corpus=${1%/}
-python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py parts/ parts_combined.txt combine_6.log
+CURRTIME=date +"%Y-%m-%d_%T"
+LOGNAME="../../logs/combining_files_$CURRTIME"
+python ~/Documents/Phonetics_Lab_Summer_2017/Phonetics-Lab/FULL_PROCEDURE/Section-1_making_COSPRO_Dataset/Phase-6_Create_Combined_Dataset/combine_tables.py parts/ $corpus_combined.txt $LOGNAME
 
 # Move combined file out of the parts folder
-mv parts/parts_combined.txt .
+mv parts/$corpus_combined.txt .
 
 echo
 echo "Process completed!"
+
+
+
+
+
+
+
+
 

@@ -11,7 +11,7 @@ def split_measures(packedFile, outpath):
     if isfile(packedFile):
         if ".txt" in packedFile:
             name = ''
-            # print("Opening " + packedFile)
+            print(" ")
             with open(packedFile, 'r') as m:
                 # get header line
                 header = next(m)
@@ -23,7 +23,8 @@ def split_measures(packedFile, outpath):
                     if newName != name:
                         out = open(outpath + newName, 'w')
                         name = newName
-                        print("Splitting file " + name)
+                        sys.stdout.write('\r')
+                        sys.stdout.write("Splitting file " + name)
                         out.write(header)
                     # write line
                     out.write(line)
